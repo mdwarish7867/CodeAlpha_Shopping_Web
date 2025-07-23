@@ -13,23 +13,23 @@ Developed as part of my internship project at **CodeAlpha**.
 
 ## 🚀 Tech Stack
 
-- **Backend:** Django 5, PostgreSQL  
-- **Frontend:** HTML, CSS, Bootstrap (Django Templates)  
-- **Hosting:** Render (Free Tier)  
-- **Static Files:** WhiteNoise  
-- **Authentication:** Django's built-in auth system  
+- **Backend:** Django 5, PostgreSQL
+- **Frontend:** HTML, CSS, Bootstrap (Django Templates)
+- **Hosting:** Render (Free Tier)
+- **Static Files:** WhiteNoise
+- **Authentication:** Django's built-in auth system
 
 ---
 
 ## 📦 Features
 
-- 🏬 Product listing and detail view  
-- 🔐 User registration and login  
-- 🛒 Add-to-cart functionality  
-- ⚙️ Admin panel for managing products  
-- 💾 PostgreSQL database with environment configuration  
-- 📦 Static files handled via WhiteNoise  
-- 🌐 Live deployment with Render  
+- 🏬 Product listing and detail view
+- 🔐 User registration and login
+- 🛒 Add-to-cart functionality
+- ⚙️ Admin panel for managing products
+- 💾 PostgreSQL database with environment configuration
+- 📦 Static files handled via WhiteNoise
+- 🌐 Live deployment with Render
 
 ---
 
@@ -132,12 +132,12 @@ Visit `http://127.0.0.1:8000/` in your browser.
 
 ## 📌 To-Do List
 
-- [x] Product CRUD via Django Admin  
-- [x] User login & register pages  
-- [x] Shopping cart system  
-- [ ] Order tracking and checkout  
-- [ ] Product search and filtering  
-- [ ] Payment gateway integration (Razorpay/Stripe)  
+- [x] Product CRUD via Django Admin
+- [x] User login & register pages
+- [x] Shopping cart system
+- [ ] Order tracking and checkout
+- [ ] Product search and filtering
+- [ ] Payment gateway integration (Razorpay/Stripe)
 
 ---
 
@@ -145,7 +145,7 @@ Visit `http://127.0.0.1:8000/` in your browser.
 
 **Mohammad Warish Ansari**  
 B.Tech CSE | MERN & Django Developer  
-[LinkedIn Profile](https://linkedin.com/in/mdwarish7867)
+[LinkedIn Profile](https://www.linkedin.com/in/md-warish-ansari-46b1ab258/)
 
 ---
 
@@ -158,6 +158,6 @@ Not licensed for commercial use.
 
 ## 🙏 Special Thanks
 
-- **CodeAlpha** – Internship Provider  
-- **Render** – Hosting Platform  
+- **CodeAlpha** – Internship Provider
+- **Render** – Hosting Platform
 - Django & Open Source Community ❤️
