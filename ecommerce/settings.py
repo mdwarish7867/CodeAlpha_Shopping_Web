@@ -32,7 +32,7 @@ SECRET_KEY = 'django-insecure-^i+8ug=zfq-mg4k)c%!&%*w&*x9@kq&r03deeo-^v)_!z8-jde
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['codealpha-shopping-web.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -130,6 +130,9 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 # Static files (CSS, JavaScript, Images)
