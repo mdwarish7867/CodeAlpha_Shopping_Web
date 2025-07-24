@@ -1,0 +1,251 @@
+{% extends 'base.html' %} {% block title %}Home | NexusShop{% endblock %} {%block content %}
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>Elevate Your Shopping Experience</h1>
+    <p>
+      Discover premium products at unbeatable prices with fast delivery and
+      exceptional service
+    </p>
+    <div class="hero-buttons">
+      <a href="{% url 'products' %}" class="btn">Shop Now</a>
+      <a href="#categories" class="btn btn-outline btn-categories">Explore Categories</a>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Products -->
+<section>
+  <h2 class="section-title">Featured Products</h2>
+  <div class="products-grid">
+    <!-- Product 1 -->
+    <div class="product-card animate-on-scroll">
+      <div class="product-badge">New</div>
+      <div class="product-img-container">
+        <img
+          src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+          alt="Wireless Headphones"
+          class="product-img"
+        />
+        <div class="quick-view">Quick View</div>
+      </div>
+      <div class="product-info">
+        <h3 class="product-title">Wireless Bluetooth Headphones</h3>
+        <div class="product-category">Electronics</div>
+        <div class="product-rating">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star-half-alt"></i>
+          <span>(128)</span>
+        </div>
+        <div class="product-price">$89.99 <del>$129.99</del></div>
+        <button class="add-to-cart">
+          <i class="fas fa-shopping-cart"></i> Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <!-- Product 2 -->
+    <div class="product-card animate-on-scroll">
+      <div class="product-img-container">
+        <img
+          src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+          alt="Smart Watch"
+          class="product-img"
+        />
+        <div class="quick-view">Quick View</div>
+      </div>
+      <div class="product-info">
+        <h3 class="product-title">Smart Fitness Tracker</h3>
+        <div class="product-category">Wearables</div>
+        <div class="product-rating">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="far fa-star"></i>
+          <span>(97)</span>
+        </div>
+        <div class="product-price">$149.99</div>
+        <button class="add-to-cart">
+          <i class="fas fa-shopping-cart"></i> Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <!-- Product 3 -->
+    <div class="product-card animate-on-scroll">
+      <div class="product-badge">Sale</div>
+      <div class="product-img-container">
+        <img
+          src="https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+          alt="Running Shoes"
+          class="product-img"
+        />
+        <div class="quick-view">Quick View</div>
+      </div>
+      <div class="product-info">
+        <h3 class="product-title">Ultraboost Running Shoes</h3>
+        <div class="product-category">Footwear</div>
+        <div class="product-rating">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <span>(256)</span>
+        </div>
+        <div class="product-price">$119.99 <del>$149.99</del></div>
+        <button class="add-to-cart">
+          <i class="fas fa-shopping-cart"></i> Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <!-- Product 4 -->
+    <div class="product-card animate-on-scroll">
+      <div class="product-img-container">
+        <img
+          src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+          alt="Wireless Earbuds"
+          class="product-img"
+        />
+        <div class="quick-view">Quick View</div>
+      </div>
+      <div class="product-info">
+        <h3 class="product-title">True Wireless Earbuds</h3>
+        <div class="product-category">Electronics</div>
+        <div class="product-rating">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star-half-alt"></i>
+          <span>(184)</span>
+        </div>
+        <div class="product-price">$79.99</div>
+        <button class="add-to-cart">
+          <i class="fas fa-shopping-cart"></i> Add to Cart
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section>
+  <h2 class="section-title">Why Choose Us</h2>
+  <div class="features">
+    <div class="feature-card animate-on-scroll">
+      <div class="feature-icon">
+        <i class="fas fa-shipping-fast"></i>
+      </div>
+      <h3>Free Shipping</h3>
+      <p>On orders over $50</p>
+    </div>
+    <div class="feature-card animate-on-scroll">
+      <div class="feature-icon">
+        <i class="fas fa-sync-alt"></i>
+      </div>
+      <h3>Easy Returns</h3>
+      <p>30-day satisfaction guarantee</p>
+    </div>
+    <div class="feature-card animate-on-scroll">
+      <div class="feature-icon">
+        <i class="fas fa-lock"></i>
+      </div>
+      <h3>Secure Payments</h3>
+      <p>Encrypted transaction processing</p>
+    </div>
+    <div class="feature-card animate-on-scroll">
+      <div class="feature-icon">
+        <i class="fas fa-headset"></i>
+      </div>
+      <h3>24/7 Support</h3>
+      <p>Dedicated customer service</p>
+    </div>
+  </div>
+</section>
+
+<!-- Categories Section -->
+<section id="categories">
+  <h2 class="section-title">Shop by Category</h2>
+  <div class="categories">
+    <div class="category-card animate-on-scroll">
+      <img
+        src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+        alt="Electronics"
+        class="category-img"
+      />
+      <div class="category-overlay">
+        <h3 class="category-name">Electronics</h3>
+        <a href="{% url 'category' 'electronics' %}" class="btn btn-outline"
+          >Shop Now</a
+        >
+      </div>
+    </div>
+    <div class="category-card animate-on-scroll">
+      <img
+        src="https://images.unsplash.com/photo-1491637639811-60e2756cc1c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+        alt="Fashion"
+        class="category-img"
+      />
+      <div class="category-overlay">
+        <h3 class="category-name">Fashion</h3>
+        <a href="{% url 'category' 'fashion' %}" class="btn btn-outline"
+          >Shop Now</a
+        >
+      </div>
+    </div>
+    <div class="category-card animate-on-scroll">
+      <img
+        src="https://images.unsplash.com/photo-1526178613552-2b45c6c302f0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+        alt="Home & Kitchen"
+        class="category-img"
+      />
+      <div class="category-overlay">
+        <h3 class="category-name">Home & Kitchen</h3>
+        <a href="{% url 'category' 'home-kitchen' %}" class="btn btn-outline"
+          >Shop Now</a
+        >
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Account Selector -->
+<section class="account-selector animate-on-scroll">
+  <h2>Join Our Community</h2>
+  <p>Select your account type to get started</p>
+
+  <div class="selector-cards">
+    <div class="selector-card">
+      <div class="selector-icon">
+        <i class="fas fa-user"></i>
+      </div>
+      <h3>Shopper Account</h3>
+      <p>
+        Shop from thousands of products, track orders, and manage your wishlist
+      </p>
+      <a href="{% url 'register' %}?account_type=buyer" class="btn"
+        >Register as Shopper</a
+      >
+    </div>
+
+    <div class="selector-card">
+      <div class="selector-icon">
+        <i class="fas fa-store"></i>
+      </div>
+      <h3>Seller Account</h3>
+      <p>
+        List your products, manage inventory, and reach thousands of customers
+      </p>
+      <a href="{% url 'register' %}?account_type=seller" class="btn"
+        >Register as Seller</a
+      >
+    </div>
+  </div>
+</section>
+{% endblock %}

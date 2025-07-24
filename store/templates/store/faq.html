@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}FAQ | NexusShop{% endblock %}
+
+{% block content %}
+<section class="faq-section">
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    <div class="container">
+        <div class="faq-content">
+            {% for faq in faqs %}
+            <div class="faq-item">
+                <h3>{{ faq.question }}</h3>
+                <p>{{ faq.answer }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}{{ category.name }} | NexusShop{% endblock %}
+
+{% block content %}
+<h2 class="section-title">{{ category.name }}</h2>
+<p class="text-center mb-4">{{ category.description }}</p>
+
+<div class="products-grid">
+    {% for product in products %}
+    <div class="product-card animate-on-scroll">
+        <div class="product-img-container">
+            <img 
+                src="{% if product.image %}{{ product.image.url }}{% else %}https://via.placeholder.com/300x300?text=No+Image{% endif %}" 
+                alt="{{ product.name }}" 
+                class="product-img"
+            >
+            <div class="quick-view">Quick View</div>
+        </div>
+        <div class="product-info">
+            <h3 class="product-title">{{ product.name }}</h3>
+            <div class="product-category">{{ product.category.name }}</div>
+            <div class="product-price">${{ product.price }}</div>
+            <button class="add-to-cart">
+                <i class="fas fa-shopping-cart"></i> Add to Cart
+            </button>
+        </div>
+    </div>
+    {% empty %}
+    <p class="text-center">No products found in this category.</p>
+    {% endfor %}
+</div>
+{% endblock %}
