@@ -68,12 +68,11 @@ def seller_profile(request):
     return render(request, 'users/seller_profile.html', {'form': form})
 @login_required
 def user_dashboard(request):
-    """
-    Dashboard view for regular users (buyers)
-    """
-    # Add any buyer-specific data you want to display
-    context = {
-        'user': request.user,
-        'orders': []  # You can add order history here later
-    }
-    return render(request, 'users/dashboard.html', context)
+    # Placeholder data - implement these later
+    orders = []
+    wishlist_items = []
+    
+    return render(request, 'users/dashboard.html', {
+        'orders': orders,
+        'wishlist_items': wishlist_items
+    })

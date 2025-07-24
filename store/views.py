@@ -104,12 +104,34 @@ def seller_dashboard(request):
         return redirect('home')
     
     products = Product.objects.filter(seller=request.user)
-    return render(request, 'store/seller_dashboard.html', {'products': products})
+    
+    # Placeholder data - you'll implement these later
+    total_sales = 0
+    total_orders = 0
+    average_rating = None
+    recent_orders = []
+    
+    return render(request, 'store/seller_dashboard.html', {
+        'products': products,
+        'total_sales': total_sales,
+        'total_orders': total_orders,
+        'average_rating': average_rating,
+        'recent_orders': recent_orders[:5]  # Show last 5 orders
+    })
 
 @login_required
 def add_product(request):
     if not request.user.user_type == 'seller':
         return redirect('home')
+    
+    # Get all categories or create default ones if none exist
+    categories = Category.objects.all()
+    if not categories.exists():
+        # Create default categories
+        electronics = Category.objects.create(name="Electronics", slug="electronics")
+        fashion = Category.objects.create(name="Fashion", slug="fashion")
+        home = Category.objects.create(name="Home & Kitchen", slug="home-kitchen")
+        categories = Category.objects.all()
     
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
@@ -121,4 +143,8 @@ def add_product(request):
             return redirect('seller_dashboard')
     else:
         form = ProductForm()
-    return render(request, 'store/add_product.html', {'form': form})
+    
+    return render(request, 'store/add_product.html', {
+        'form': form,
+        'categories': categories
+    })

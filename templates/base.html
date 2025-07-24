@@ -1206,6 +1206,62 @@ input[type="radio"]:checked + .radio-custom::after {
         gap: 0.5rem;
     }
 }
+/* Dashboard Styles */
+.stat-card {
+    border-radius: 10px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.detail-item {
+    display: flex;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.detail-item .label {
+    font-weight: 600;
+    width: 120px;
+    color: #555;
+}
+
+.detail-item .value {
+    flex: 1;
+}
+
+.avatar {
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-thumb {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.card-header h5 {
+    display: flex;
+    align-items: center;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(108, 99, 255, 0.05);
+}
+
+.badge {
+    font-weight: 500;
+    padding: 0.5em 0.8em;
+}
       }
     </style>
     {% block extra_css %}{% endblock %}
