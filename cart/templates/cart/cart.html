@@ -15,6 +15,7 @@
                 <h3>{{ item.product.name }}</h3>
                 <p>Price: ${{ item.product.price }}</p>
                 <div class="quantity-control">
+                    <!-- Update form action to use update_cart URL -->
                     <form method="post" action="{% url 'update_cart' item.id %}">
                         {% csrf_token %}
                         <label>Quantity:</label>
