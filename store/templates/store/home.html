@@ -3,651 +3,322 @@
 
 {% block title %}Home | NexusShop{% endblock %}
 
-{% block extra_css %}
-<style>
-  /* Filter sidebar styles */
-  .filter-container {
-    display: flex;
-    margin-top: 2rem;
-  }
-  
-  .filter-sidebar {
-    width: 280px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: var(--shadow);
-    padding: 1.5rem;
-    margin-right: 2rem;
-    height: fit-content;
-    position: sticky;
-    top: 100px;
-  }
-  
-  .filter-toggle {
-    display: none;
-    background: var(--primary);
-    color: white;
-    border: none;
-    padding: 0.8rem 1.5rem;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-    cursor: pointer;
-    font-weight: 600;
-  }
-  
-  .filter-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--light-gray);
-  }
-  
-  .filter-section {
-    margin-bottom: 1.5rem;
-  }
-  
-  .filter-section h4 {
-    margin-bottom: 0.8rem;
-    font-size: 1.1rem;
-    color: var(--secondary);
-  }
-  
-  .filter-options {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-  }
-  
-  .filter-option {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-  }
-  
-  .filter-option input {
-    width: 18px;
-    height: 18px;
-  }
-  
-  .price-range {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-  }
-  
-  .price-range input {
-    width: 100px;
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-  }
-  
-  .main-content {
-    flex: 1;
-  }
-  
-  /* Section styles */
-  .section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-  }
-  
-  .section-title {
-    margin: 3rem 0 1.5rem;
-    text-align: left;
-    font-size: 1.8rem;
-  }
-  
-  .section-title::after {
-    left: 0;
-    transform: none;
-  }
-  
-  /* Responsive adjustments */
-  @media (max-width: 992px) {
-    .filter-sidebar {
-      width: 250px;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    .filter-container {
-      flex-direction: column;
-    }
-    
-    .filter-toggle {
-      display: block;
-    }
-    
-    .filter-sidebar {
-      width: 100%;
-      margin-right: 0;
-      margin-bottom: 2rem;
-      position: relative;
-      top: 0;
-      display: none;
-    }
-    
-    .filter-sidebar.active {
-      display: block;
-    }
-    
-    .price-range {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    
-    .price-range input {
-      width: 100%;
-    }
-  }
-</style>
-{% endblock %}
-
 {% block content %}
 {% if not user.is_authenticated %}
 <!-- ANONYMOUS USER VIEW -->
-<section class="hero">
-  <div class="hero-content">
-    <h1>Elevate Your Shopping Experience</h1>
-    <p>
-      Discover premium products at unbeatable prices with fast delivery and
-      exceptional service
-    </p>
-    <div class="hero-buttons">
-      <a href="{% url 'products' %}" class="btn">Shop Now</a>
-      <a href="#categories" class="btn btn-outline btn-categories">Explore Categories</a>
+<section class="hero d-flex align-items-center">
+    <div class="container text-center text-white">
+        <h1 class="display-3 fw-bold mb-4">Elevate Your Shopping Experience</h1>
+        <p class="lead mb-5 mx-auto" style="max-width: 700px;">
+            Discover premium products at unbeatable prices with fast delivery and
+            exceptional service
+        </p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <a href="{% url 'products' %}" class="btn btn-primary btn-lg px-5 py-3">Shop Now</a>
+            <a href="#categories" class="btn btn-light btn-lg px-5 py-3">Explore Categories</a>
+        </div>
     </div>
-  </div>
 </section>
 
 <!-- Featured Products -->
-<section>
-  <h2 class="section-title">Featured Products</h2>
-  <div class="products-grid">
-    {% for product in featured_products %}
-    <div class="product-card animate-on-scroll">
-      {% if forloop.first %}
-      <div class="product-badge">New</div>
-      {% elif forloop.counter == 3 %}
-      <div class="product-badge">Sale</div>
-      {% endif %}
-      <div class="product-img-container">
-        <img 
-          src="{% if product.image %}{{ product.image.url }}{% else %}https://via.placeholder.com/300x300?text=No+Image{% endif %}" 
-          alt="{{ product.name }}" 
-          class="product-img"
-        >
-        <div class="quick-view">Quick View</div>
-      </div>
-      <div class="product-info">
-        <h3 class="product-title">{{ product.name }}</h3>
-        <div class="product-category">{{ product.category.name }}</div>
-        <div class="product-price">${{ product.price }}</div>
-        <button class="add-to-cart">
-          <i class="fas fa-shopping-cart"></i> Add to Cart
-        </button>
-      </div>
+<section class="py-5">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">Featured Products</h2>
+        <div class="row g-4">
+            {% for product in featured_products %}
+            <div class="col-md-6 col-lg-4 col-xl-3">
+                <div class="card product-card h-100 border-0 shadow">
+                    {% if forloop.first %}
+                    <span class="badge bg-danger position-absolute top-0 start-0 m-3">New</span>
+                    {% elif forloop.counter == 3 %}
+                    <span class="badge bg-success position-absolute top-0 start-0 m-3">Sale</span>
+                    {% endif %}
+                    
+                    <div class="position-relative overflow-hidden" style="height: 250px;">
+                        <img 
+                            src="{% if product.image %}{{ product.image.url }}{% else %}https://via.placeholder.com/300x300?text=No+Image{% endif %}" 
+                            alt="{{ product.name }}" 
+                            class="img-fluid w-100 h-100 object-fit-cover"
+                        >
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="text-muted small mb-2">{{ product.category.name }}</p>
+                        <h4 class="text-primary mb-3">${{ product.price }}</h4>
+                        <button class="btn btn-primary w-100 add-to-cart" data-product-id="{{ product.id }}">
+                            <i class="fas fa-shopping-cart me-2"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-    {% endfor %}
-  </div>
 </section>
 
 <!-- Features Section -->
-<section>
-  <h2 class="section-title">Why Choose Us</h2>
-  <div class="features">
-    <div class="feature-card animate-on-scroll">
-      <div class="feature-icon">
-        <i class="fas fa-shipping-fast"></i>
-      </div>
-      <h3>Free Shipping</h3>
-      <p>On orders over $50</p>
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">Why Choose Us</h2>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm text-center p-4">
+                    <div class="text-primary mb-3">
+                        <i class="fas fa-shipping-fast fa-3x"></i>
+                    </div>
+                    <h3 class="h5">Free Shipping</h3>
+                    <p class="mb-0">On orders over $50</p>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm text-center p-4">
+                    <div class="text-primary mb-3">
+                        <i class="fas fa-sync-alt fa-3x"></i>
+                    </div>
+                    <h3 class="h5">Easy Returns</h3>
+                    <p class="mb-0">30-day satisfaction guarantee</p>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm text-center p-4">
+                    <div class="text-primary mb-3">
+                        <i class="fas fa-lock fa-3x"></i>
+                    </div>
+                    <h3 class="h5">Secure Payments</h3>
+                    <p class="mb-0">Encrypted transaction processing</p>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm text-center p-4">
+                    <div class="text-primary mb-3">
+                        <i class="fas fa-headset fa-3x"></i>
+                    </div>
+                    <h3 class="h5">24/7 Support</h3>
+                    <p class="mb-0">Dedicated customer service</p>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="feature-card animate-on-scroll">
-      <div class="feature-icon">
-        <i class="fas fa-sync-alt"></i>
-      </div>
-      <h3>Easy Returns</h3>
-      <p>30-day satisfaction guarantee</p>
-    </div>
-    <div class="feature-card animate-on-scroll">
-      <div class="feature-icon">
-        <i class="fas fa-lock"></i>
-      </div>
-      <h3>Secure Payments</h3>
-      <p>Encrypted transaction processing</p>
-    </div>
-    <div class="feature-card animate-on-scroll">
-      <div class="feature-icon">
-        <i class="fas fa-headset"></i>
-      </div>
-      <h3>24/7 Support</h3>
-      <p>Dedicated customer service</p>
-    </div>
-  </div>
 </section>
 
 <!-- Categories Section -->
-<section id="categories">
-  <h2 class="section-title">Shop by Category</h2>
-  <div class="categories">
-    {% for category in categories|slice:":3" %}
-    <div class="category-card animate-on-scroll">
-      <img 
-        src="{% if category.image %}{{ category.image.url }}{% else %}https://via.placeholder.com/600x400?text=Category{% endif %}" 
-        alt="{{ category.name }}" 
-        class="category-img"
-      >
-      <div class="category-overlay">
-        <h3 class="category-name">{{ category.name }}</h3>
-        <a href="{% url 'category' category.slug %}" class="btn btn-outline"
-          >Shop Now</a
-        >
-      </div>
+<section id="categories" class="py-5">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">Shop by Category</h2>
+        <div class="row g-4">
+            {% for category in categories|slice:":3" %}
+            <div class="col-md-4">
+                <div class="category-card rounded-3 overflow-hidden position-relative">
+                    <img 
+                        src="{% if category.image %}{{ category.image.url }}{% else %}https://via.placeholder.com/600x400?text=Category{% endif %}" 
+                        alt="{{ category.name }}" 
+                        class="img-fluid w-100 h-100 object-fit-cover"
+                    >
+                    <div class="category-overlay">
+                        <h3 class="h2">{{ category.name }}</h3>
+                        <a href="{% url 'category' category.slug %}" class="btn btn-outline-light">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-    {% endfor %}
-  </div>
 </section>
 
 <!-- Account Selector -->
-<section class="account-selector animate-on-scroll">
-  <h2>Join Our Community</h2>
-  <p>Select your account type to get started</p>
-
-  <div class="selector-cards">
-    <div class="selector-card">
-      <div class="selector-icon">
-        <i class="fas fa-user"></i>
-      </div>
-      <h3>Shopper Account</h3>
-      <p>
-        Shop from thousands of products, track orders, and manage your wishlist
-      </p>
-      <a href="{% url 'register' %}?account_type=buyer" class="btn"
-        >Register as Shopper</a
-      >
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h2 class="mb-4">Join Our Community</h2>
+                <p class="mb-5">Select your account type to get started</p>
+                
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow text-center p-4">
+                            <div class="text-primary mb-3">
+                                <i class="fas fa-user fa-3x"></i>
+                            </div>
+                            <h3>Shopper Account</h3>
+                            <p class="mb-4">
+                                Shop from thousands of products, track orders, and manage your wishlist
+                            </p>
+                            <a href="{% url 'register' %}?account_type=buyer" class="btn btn-primary mt-auto">Register as Shopper</a>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow text-center p-4">
+                            <div class="text-primary mb-3">
+                                <i class="fas fa-store fa-3x"></i>
+                            </div>
+                            <h3>Seller Account</h3>
+                            <p class="mb-4">
+                                List your products, manage inventory, and reach thousands of customers
+                            </p>
+                            <a href="{% url 'register' %}?account_type=seller" class="btn btn-primary mt-auto">Register as Seller</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="selector-card">
-      <div class="selector-icon">
-        <i class="fas fa-store"></i>
-      </div>
-      <h3>Seller Account</h3>
-      <p>
-        List your products, manage inventory, and reach thousands of customers
-      </p>
-      <a href="{% url 'register' %}?account_type=seller" class="btn"
-        >Register as Seller</a
-      >
-    </div>
-  </div>
 </section>
 
 {% else %}
 <!-- LOGGED-IN USER VIEW -->
-
-<div class="container">
-  <div class="section-header">
-    <h1 class="section-title">Welcome Back, {{ user.username }}!</h1>
-    <p>Discover products tailored just for you</p>
-  </div>
-  
-  <div class="filter-container">
-    <!-- Filter sidebar -->
-    <div class="filter-sidebar" id="filterSidebar">
-      <div class="filter-header">
-        <h3>Filter Products</h3>
-        <button class="btn btn-outline" id="resetFilters">Reset</button>
-      </div>
-      
-      <!-- Category filter -->
-      <div class="filter-section">
-        <h4>Categories</h4>
-        <div class="filter-options">
-          {% for category in categories %}
-          <div class="filter-option">
-            <input type="checkbox" id="cat-{{ category.id }}" name="category" value="{{ category.id }}">
-            <label for="cat-{{ category.id }}">{{ category.name }}</label>
-          </div>
-          {% endfor %}
+<div class="container py-5">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-5">
+        <div>
+            <h1 class="section-title">Welcome Back, {{ user.username }}!</h1>
+            <p class="lead">Discover products tailored just for you</p>
         </div>
-      </div>
-      
-      <!-- Price filter -->
-      <div class="filter-section">
-        <h4>Price Range</h4>
-        <div class="price-range">
-          <input type="number" placeholder="Min" id="minPrice">
-          <span>to</span>
-          <input type="number" placeholder="Max" id="maxPrice">
+        <div class="mt-3 mt-md-0">
+            <a href="{% url 'products' %}" class="btn btn-outline-primary">View All Products</a>
         </div>
-      </div>
-      
-      <!-- Rating filter -->
-      <div class="filter-section">
-        <h4>Customer Rating</h4>
-        <div class="filter-options">
-          <div class="filter-option">
-            <input type="checkbox" id="rating-4" name="rating" value="4">
-            <label for="rating-4">
-              <span class="product-rating">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-              </span> & Up
-            </label>
-          </div>
-          <div class="filter-option">
-            <input type="checkbox" id="rating-3" name="rating" value="3">
-            <label for="rating-3">
-              <span class="product-rating">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="far fa-star"></i>
-              </span> & Up
-            </label>
-          </div>
-          <div class="filter-option">
-            <input type="checkbox" id="rating-2" name="rating" value="2">
-            <label for="rating-2">
-              <span class="product-rating">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="far fa-star"></i>
-                <i class="far fa-star"></i>
-              </span> & Up
-            </label>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Availability filter -->
-      <div class="filter-section">
-        <h4>Availability</h4>
-        <div class="filter-options">
-          <div class="filter-option">
-            <input type="checkbox" id="in-stock" name="availability" value="in-stock">
-            <label for="in-stock">In Stock</label>
-          </div>
-          <div class="filter-option">
-            <input type="checkbox" id="new-arrivals" name="availability" value="new">
-            <label for="new-arrivals">New Arrivals</label>
-          </div>
-        </div>
-      </div>
-      
-      <button class="btn" id="applyFilters">Apply Filters</button>
     </div>
     
-    <!-- Main content -->
-    <div class="main-content">
-      <button class="filter-toggle" id="filterToggle">
-        <i class="fas fa-filter"></i> Show Filters
-      </button>
-      
-      <!-- Recently Viewed -->
-      <section>
-        <div class="section-header">
-          <h2 class="section-title">Recently Viewed</h2>
-          <a href="#" class="btn btn-outline">View All</a>
+    <!-- Recently Viewed -->
+    <section class="mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="h4">Recently Viewed</h2>
+            <a href="{% url 'products' %}" class="btn btn-sm btn-outline-secondary">View All</a>
         </div>
-        <div class="products-grid">
-          {% for product in recently_viewed %}
-          <div class="product-card">
-            <div class="product-img-container">
-              <img 
-                src="{% if product.image %}{{ product.image.url }}{% else %}https://via.placeholder.com/300x300?text=No+Image{% endif %}" 
-                alt="{{ product.name }}" 
-                class="product-img"
-              >
+        <div class="row g-4">
+            {% for product in recently_viewed %}
+            <div class="col-md-6 col-lg-4 col-xl-3">
+                <div class="card product-card h-100 border-0 shadow">
+                    <div class="position-relative overflow-hidden" style="height: 200px;">
+                        <img 
+                            src="{% if product.image %}{{ product.image.url }}{% else %}https://via.placeholder.com/300x300?text=No+Image{% endif %}" 
+                            alt="{{ product.name }}" 
+                            class="img-fluid w-100 h-100 object-fit-cover"
+                        >
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="text-muted small mb-2">{{ product.category.name }}</p>
+                        <h4 class="text-primary mb-3">${{ product.price }}</h4>
+                        <div class="d-flex gap-2">
+                            <a href="{% url 'product_detail' product.id %}" class="btn btn-sm btn-outline-primary flex-grow-1">View</a>
+                            <button class="btn btn-sm btn-primary add-to-cart" data-product-id="{{ product.id }}">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="product-info">
-              <h3 class="product-title">{{ product.name }}</h3>
-              <div class="product-category">{{ product.category.name }}</div>
-              <div class="product-price">${{ product.price }}</div>
-              <div class="product-actions">
-                <a href="{% url 'product_detail' product.id %}" class="btn btn-outline">View</a>
-                <button class="btn add-to-cart" data-product-id="{{ product.id }}">
-                  <i class="fas fa-shopping-cart"></i> Add
-                </button>
-              </div>
+            {% endfor %}
+        </div>
+    </section>
+    
+    <!-- Top Rated -->
+    <section class="mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="h4">Top Rated Products</h2>
+            <a href="{% url 'products' %}" class="btn btn-sm btn-outline-secondary">View All</a>
+        </div>
+        <div class="row g-4">
+            {% for product in top_rated %}
+            <div class="col-md-6 col-lg-4 col-xl-3">
+                <div class="card product-card h-100 border-0 shadow">
+                    <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-3">Top Rated</span>
+                    <div class="position-relative overflow-hidden" style="height: 200px;">
+                        <img 
+                            src="{% if product.image %}{{ product.image.url }}{% else %}https://via.placeholder.com/300x300?text=No+Image{% endif %}" 
+                            alt="{{ product.name }}" 
+                            class="img-fluid w-100 h-100 object-fit-cover"
+                        >
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="text-muted small mb-2">{{ product.category.name }}</p>
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="text-warning small">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="ms-2 text-muted small">(128)</span>
+                        </div>
+                        <h4 class="text-primary mb-3">${{ product.price }}</h4>
+                        <div class="d-flex gap-2">
+                            <a href="{% url 'product_detail' product.id %}" class="btn btn-sm btn-outline-primary flex-grow-1">View</a>
+                            <button class="btn btn-sm btn-primary add-to-cart" data-product-id="{{ product.id }}">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-          {% endfor %}
+            {% endfor %}
         </div>
-      </section>
-      
-      <!-- Top Rated -->
-      <section>
-        <div class="section-header">
-          <h2 class="section-title">Top Rated Products</h2>
-          <a href="#" class="btn btn-outline">View All</a>
+    </section>
+    
+    <!-- Recommended For You -->
+    <section class="mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="h4">Recommended For You</h2>
+            <a href="{% url 'products' %}" class="btn btn-sm btn-outline-secondary">View All</a>
         </div>
-        <div class="products-grid">
-          {% for product in top_rated %}
-          <div class="product-card">
-            <div class="product-badge">Top Rated</div>
-            <div class="product-img-container">
-              <img 
-                src="{% if product.image %}{{ product.image.url }}{% else %}https://via.placeholder.com/300x300?text=No+Image{% endif %}" 
-                alt="{{ product.name }}" 
-                class="product-img"
-              >
+        <div class="row g-4">
+            {% for product in recommended %}
+            <div class="col-md-6 col-lg-4 col-xl-3">
+                <div class="card product-card h-100 border-0 shadow">
+                    <span class="badge bg-info position-absolute top-0 start-0 m-3">Recommended</span>
+                    <div class="position-relative overflow-hidden" style="height: 200px;">
+                        <img 
+                            src="{% if product.image %}{{ product.image.url }}{% else %}https://via.placeholder.com/300x300?text=No+Image{% endif %}" 
+                            alt="{{ product.name }}" 
+                            class="img-fluid w-100 h-100 object-fit-cover"
+                        >
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="text-muted small mb-2">{{ product.category.name }}</p>
+                        <h4 class="text-primary mb-3">${{ product.price }}</h4>
+                        <div class="d-flex gap-2">
+                            <a href="{% url 'product_detail' product.id %}" class="btn btn-sm btn-outline-primary flex-grow-1">View</a>
+                            <button class="btn btn-sm btn-primary add-to-cart" data-product-id="{{ product.id }}">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="product-info">
-              <h3 class="product-title">{{ product.name }}</h3>
-              <div class="product-category">{{ product.category.name }}</div>
-              <div class="product-rating">
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star-half-alt"></i>
-                <span>(128)</span>
-              </div>
-              <div class="product-price">${{ product.price }}</div>
-              <div class="product-actions">
-                <a href="{% url 'product_detail' product.id %}" class="btn btn-outline">View</a>
-                <button class="btn add-to-cart" data-product-id="{{ product.id }}">
-                  <i class="fas fa-shopping-cart"></i> Add
-                </button>
-              </div>
+            {% endfor %}
+        </div>
+    </section>
+    
+    <!-- Popular Categories -->
+    <section>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="h4">Popular Categories</h2>
+            <a href="{% url 'categories' %}" class="btn btn-sm btn-outline-secondary">Browse All</a>
+        </div>
+        <div class="row g-4">
+            {% for category in popular_categories %}
+            <div class="col-md-4">
+                <div class="category-card rounded-3 overflow-hidden position-relative">
+                    <img 
+                        src="{% if category.image %}{{ category.image.url }}{% else %}https://via.placeholder.com/600x400?text=Category{% endif %}" 
+                        alt="{{ category.name }}" 
+                        class="img-fluid w-100 h-100 object-fit-cover"
+                    >
+                    <div class="category-overlay">
+                        <h3 class="h4">{{ category.name }}</h3>
+                        <a href="{% url 'category' category.slug %}" class="btn btn-sm btn-outline-light">Shop Now</a>
+                    </div>
+                </div>
             </div>
-          </div>
-          {% endfor %}
+            {% endfor %}
         </div>
-      </section>
-      
-      <!-- Recommended For You -->
-      <section>
-        <div class="section-header">
-          <h2 class="section-title">Recommended For You</h2>
-          <a href="#" class="btn btn-outline">View All</a>
-        </div>
-        <div class="products-grid">
-          {% for product in recommended %}
-          <div class="product-card">
-            <div class="product-badge">Recommended</div>
-            <div class="product-img-container">
-              <img 
-                src="{% if product.image %}{{ product.image.url }}{% else %}https://via.placeholder.com/300x300?text=No+Image{% endif %}" 
-                alt="{{ product.name }}" 
-                class="product-img"
-              >
-            </div>
-            <div class="product-info">
-              <h3 class="product-title">{{ product.name }}</h3>
-              <div class="product-category">{{ product.category.name }}</div>
-              <div class="product-price">${{ product.price }}</div>
-              <div class="product-actions">
-                <a href="{% url 'product_detail' product.id %}" class="btn btn-outline">View</a>
-                <button class="btn add-to-cart" data-product-id="{{ product.id }}">
-                  <i class="fas fa-shopping-cart"></i> Add
-                </button>
-              </div>
-            </div>
-          </div>
-          {% endfor %}
-        </div>
-      </section>
-      
-      <!-- Popular Categories -->
-      <section>
-        <div class="section-header">
-          <h2 class="section-title">Popular Categories</h2>
-          <a href="{% url 'categories' %}" class="btn btn-outline">Browse All</a>
-        </div>
-        <div class="categories">
-          {% for category in popular_categories %}
-          <div class="category-card">
-            <img 
-              src="{% if category.image %}{{ category.image.url }}{% else %}https://via.placeholder.com/600x400?text=Category{% endif %}" 
-              alt="{{ category.name }}" 
-              class="category-img"
-            >
-            <div class="category-overlay">
-              <h3 class="category-name">{{ category.name }}</h3>
-              <a href="{% url 'category' category.slug %}" class="btn btn-outline"
-                >Shop Now</a
-              >
-            </div>
-          </div>
-          {% endfor %}
-        </div>
-      </section>
-    </div>
-  </div>
+    </section>
 </div>
 {% endif %}
-{% endblock %}
-
-{% block extra_js %}
-<script>
-  // Toggle filter sidebar on mobile
-  const filterToggle = document.getElementById('filterToggle');
-  const filterSidebar = document.getElementById('filterSidebar');
-  
-  if (filterToggle && filterSidebar) {
-    filterToggle.addEventListener('click', () => {
-      filterSidebar.classList.toggle('active');
-      filterToggle.innerHTML = filterSidebar.classList.contains('active') 
-        ? '<i class="fas fa-times"></i> Hide Filters' 
-        : '<i class="fas fa-filter"></i> Show Filters';
-    });
-  }
-  
-  // Reset filters
-  const resetFilters = document.getElementById('resetFilters');
-  if (resetFilters) {
-    resetFilters.addEventListener('click', () => {
-      document.querySelectorAll('.filter-sidebar input').forEach(input => {
-        if (input.type === 'checkbox') {
-          input.checked = false;
-        } else if (input.type === 'number') {
-          input.value = '';
-        }
-      });
-    });
-  }
-  
-  // Apply filters
-  const applyFilters = document.getElementById('applyFilters');
-  if (applyFilters) {
-    applyFilters.addEventListener('click', () => {
-      // Collect filter values
-      const categories = Array.from(document.querySelectorAll('input[name="category"]:checked'))
-        .map(cb => cb.value);
-      
-      const minPrice = document.getElementById('minPrice').value;
-      const maxPrice = document.getElementById('maxPrice').value;
-      
-      const ratings = Array.from(document.querySelectorAll('input[name="rating"]:checked'))
-        .map(cb => cb.value);
-      
-      const availability = Array.from(document.querySelectorAll('input[name="availability"]:checked'))
-        .map(cb => cb.value);
-      
-      // In a real app, you would send this to the server to filter products
-      // For now, we'll just show a notification
-      showNotification('Filters applied successfully!');
-      
-      // Log the filter values for debugging
-      console.log('Applied filters:', {
-        categories,
-        minPrice,
-        maxPrice,
-        ratings,
-        availability
-      });
-    });
-  }
-  
-  // Show notification
-  function showNotification(message, type = 'success') {
-    const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
-    notification.textContent = message;
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-      notification.remove();
-    }, 3000);
-  }
-  
-  // Add to cart functionality for logged-in users
-  document.querySelectorAll('.add-to-cart').forEach(button => {
-    button.addEventListener('click', function() {
-      const productId = this.dataset.productId;
-      
-      // In a real app, you would make an AJAX request to add to cart
-      // For now, we'll just show a notification
-      showNotification('Product added to cart!');
-      
-      // Update cart count
-      const cartCount = document.querySelector('.cart-count');
-      if (cartCount) {
-        let count = parseInt(cartCount.textContent) || 0;
-        cartCount.textContent = count + 1;
-      }
-    });
-  });
-</script>
-
-<style>
-  .notification {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 15px 25px;
-    border-radius: 5px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    z-index: 1000;
-    animation: slideIn 0.3s, fadeOut 0.5s 2.5s;
-  }
-  
-  .notification.success {
-    background: #4BB543;
-    color: white;
-  }
-  
-  @keyframes slideIn {
-    from { right: -100%; }
-    to { right: 20px; }
-  }
-  
-  @keyframes fadeOut {
-    from { opacity: 1; }
-    to { opacity: 0; }
-  }
-</style>
 {% endblock %}

@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'store',
     'users',
     'cart',
+    'django_bootstrap5',
     "django_browser_reload",
     'django.contrib.contenttypes',
     'django.contrib.admin',
