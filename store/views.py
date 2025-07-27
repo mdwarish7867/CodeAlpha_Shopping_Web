@@ -5,9 +5,34 @@ from .models import Product, Category, Subscriber
 from django.contrib.auth.decorators import login_required
 from . forms import ProductForm
 
+# store/views.py
 def home(request):
-    featured_products = Product.objects.filter(stock__gt=0)[:8]
-    return render(request, 'store/home.html', {'products': featured_products})
+    if request.user.is_authenticated:
+        # For logged-in users
+        categories = Category.objects.all()
+        recently_viewed = Product.objects.all().order_by('-id')[:8]  # Recently added
+        top_rated = Product.objects.all().order_by('?')[:8]           # Random for demo
+        recommended = Product.objects.all().order_by('?')[:8]          # Random for demo
+        popular_categories = Category.objects.all()[:3]                # First 3 categories
+        
+        context = {
+            'categories': categories,
+            'recently_viewed': recently_viewed,
+            'top_rated': top_rated,
+            'recommended': recommended,
+            'popular_categories': popular_categories,
+        }
+        return render(request, 'store/home.html', context)
+    else:
+        # For anonymous users
+        featured_products = Product.objects.filter(stock__gt=0)[:8]
+        categories = Category.objects.all()[:3]  # First 3 categories for section
+        
+        context = {
+            'featured_products': featured_products,
+            'categories': categories,
+        }
+        return render(request, 'store/home.html', context)
 
 def products(request):
     products = Product.objects.all()

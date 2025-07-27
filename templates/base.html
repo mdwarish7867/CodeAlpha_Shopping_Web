@@ -998,270 +998,270 @@
           margin-bottom: 0.5rem;
         }
         /* Auth Forms */
-.auth-container {
-    display: flex;
-    min-height: 80vh;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem 1rem;
-    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
-}
+        .auth-container {
+          display: flex;
+          min-height: 80vh;
+          align-items: center;
+          justify-content: center;
+          padding: 2rem 1rem;
+          background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+        }
 
-.auth-form-container {
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.1);
-    overflow: hidden;
-    width: 100%;
-    max-width: 900px;
-    display: flex;
-    min-height: 500px;
-}
+        .auth-form-container {
+          background: white;
+          border-radius: 20px;
+          box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+          overflow: hidden;
+          width: 100%;
+          max-width: 900px;
+          display: flex;
+          min-height: 500px;
+        }
 
-.auth-image {
-    flex: 1;
-    background: var(--gradient);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 3rem;
-    color: white;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-}
+        .auth-image {
+          flex: 1;
+          background: var(--gradient);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 3rem;
+          color: white;
+          text-align: center;
+          position: relative;
+          overflow: hidden;
+        }
 
-.auth-image::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='white' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
-}
+        .auth-image::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='white' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
 
-.auth-image h2 {
-    font-size: 2.5rem;
-    margin-bottom: 1.5rem;
-    position: relative;
-    z-index: 2;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
+        .auth-image h2 {
+          font-size: 2.5rem;
+          margin-bottom: 1.5rem;
+          position: relative;
+          z-index: 2;
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
 
-.auth-image p {
-    font-size: 1.2rem;
-    position: relative;
-    z-index: 2;
-    max-width: 80%;
-    margin: 0 auto;
-}
+        .auth-image p {
+          font-size: 1.2rem;
+          position: relative;
+          z-index: 2;
+          max-width: 80%;
+          margin: 0 auto;
+        }
 
-.auth-form {
-    flex: 1;
-    padding: 3rem 2rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
+        .auth-form {
+          flex: 1;
+          padding: 3rem 2rem;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
 
-.auth-form h2 {
-    margin-bottom: 2rem;
-    color: var(--secondary);
-    text-align: center;
-    font-size: 2.2rem;
-}
+        .auth-form h2 {
+          margin-bottom: 2rem;
+          color: var(--secondary);
+          text-align: center;
+          font-size: 2.2rem;
+        }
 
-.form-group {
-    margin-bottom: 1.5rem;
-}
+        .form-group {
+          margin-bottom: 1.5rem;
+        }
 
-.form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-    color: var(--dark);
-}
+        .form-group label {
+          display: block;
+          margin-bottom: 0.5rem;
+          font-weight: 500;
+          color: var(--dark);
+        }
 
-.form-group input {
-    width: 100%;
-    padding: 0.9rem 1.2rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-family: 'Poppins', sans-serif;
-    transition: var(--transition);
-    font-size: 1rem;
-}
+        .form-group input {
+          width: 100%;
+          padding: 0.9rem 1.2rem;
+          border: 1px solid #ddd;
+          border-radius: 8px;
+          font-family: "Poppins", sans-serif;
+          transition: var(--transition);
+          font-size: 1rem;
+        }
 
-.form-group input:focus {
-    border-color: var(--primary);
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
-}
+        .form-group input:focus {
+          border-color: var(--primary);
+          outline: none;
+          box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+        }
 
-.btn {
-    display: inline-block;
-    background: var(--gradient);
-    color: white;
-    padding: 0.9rem 2.2rem;
-    border-radius: 50px;
-    font-weight: 600;
-    transition: var(--transition);
-    border: none;
-    cursor: pointer;
-    font-family: 'Poppins', sans-serif;
-    box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
-    font-size: 1rem;
-    width: 100%;
-    text-align: center;
-    margin-top: 1rem;
-}
+        .btn {
+          display: inline-block;
+          background: var(--gradient);
+          color: white;
+          padding: 0.9rem 2.2rem;
+          border-radius: 50px;
+          font-weight: 600;
+          transition: var(--transition);
+          border: none;
+          cursor: pointer;
+          font-family: "Poppins", sans-serif;
+          box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
+          font-size: 1rem;
+          width: 100%;
+          text-align: center;
+          margin-top: 1rem;
+        }
 
-.btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(108, 99, 255, 0.4);
-}
+        .btn:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 10px 25px rgba(108, 99, 255, 0.4);
+        }
 
-.form-footer {
-    text-align: center;
-    margin-top: 1.5rem;
-    font-size: 0.9rem;
-}
+        .form-footer {
+          text-align: center;
+          margin-top: 1.5rem;
+          font-size: 0.9rem;
+        }
 
-.form-footer a {
-    color: var(--primary);
-    font-weight: 600;
-}
+        .form-footer a {
+          color: var(--primary);
+          font-weight: 600;
+        }
 
-.account-type {
-    margin: 1.5rem 0;
-}
+        .account-type {
+          margin: 1.5rem 0;
+        }
 
-.account-type h4 {
-    margin-bottom: 0.8rem;
-    font-size: 1rem;
-    color: var(--dark);
-}
+        .account-type h4 {
+          margin-bottom: 0.8rem;
+          font-size: 1rem;
+          color: var(--dark);
+        }
 
-.radio-group {
-    display: flex;
-    gap: 1.5rem;
-}
+        .radio-group {
+          display: flex;
+          gap: 1.5rem;
+        }
 
-.radio-group label {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    font-weight: 500;
-}
+        .radio-group label {
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+          font-weight: 500;
+        }
 
-.radio-custom {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--primary);
-    border-radius: 50%;
-    margin-right: 8px;
-    position: relative;
-}
+        .radio-custom {
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          border: 2px solid var(--primary);
+          border-radius: 50%;
+          margin-right: 8px;
+          position: relative;
+        }
 
-.radio-custom::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 10px;
-    height: 10px;
-    background: var(--primary);
-    border-radius: 50%;
-    opacity: 0;
-    transition: opacity 0.2s;
-}
+        .radio-custom::after {
+          content: "";
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 10px;
+          height: 10px;
+          background: var(--primary);
+          border-radius: 50%;
+          opacity: 0;
+          transition: opacity 0.2s;
+        }
 
-input[type="radio"] {
-    display: none;
-}
+        input[type="radio"] {
+          display: none;
+        }
 
-input[type="radio"]:checked + .radio-custom::after {
-    opacity: 1;
-}
+        input[type="radio"]:checked + .radio-custom::after {
+          opacity: 1;
+        }
 
-@media (max-width: 768px) {
-    .auth-form-container {
-        flex-direction: column;
-    }
-    
-    .auth-image {
-        padding: 2rem 1rem;
-        min-height: 200px;
-    }
-    
-    .auth-image h2 {
-        font-size: 2rem;
-    }
-    
-    .radio-group {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-}
-/* Dashboard Styles */
-.stat-card {
-    border-radius: 10px;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
+        @media (max-width: 768px) {
+          .auth-form-container {
+            flex-direction: column;
+          }
 
-.stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-}
+          .auth-image {
+            padding: 2rem 1rem;
+            min-height: 200px;
+          }
 
-.detail-item {
-    display: flex;
-    margin-bottom: 10px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #eee;
-}
+          .auth-image h2 {
+            font-size: 2rem;
+          }
 
-.detail-item .label {
-    font-weight: 600;
-    width: 120px;
-    color: #555;
-}
+          .radio-group {
+            flex-direction: column;
+            gap: 0.5rem;
+          }
+        }
+        /* Dashboard Styles */
+        .stat-card {
+          border-radius: 10px;
+          transition: transform 0.3s, box-shadow 0.3s;
+        }
 
-.detail-item .value {
-    flex: 1;
-}
+        .stat-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
 
-.avatar {
-    width: 70px;
-    height: 70px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+        .detail-item {
+          display: flex;
+          margin-bottom: 10px;
+          padding-bottom: 10px;
+          border-bottom: 1px solid #eee;
+        }
 
-.product-thumb {
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-    border-radius: 5px;
-}
+        .detail-item .label {
+          font-weight: 600;
+          width: 120px;
+          color: #555;
+        }
 
-.card-header h5 {
-    display: flex;
-    align-items: center;
-}
+        .detail-item .value {
+          flex: 1;
+        }
 
-.table-hover tbody tr:hover {
-    background-color: rgba(108, 99, 255, 0.05);
-}
+        .avatar {
+          width: 70px;
+          height: 70px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
 
-.badge {
-    font-weight: 500;
-    padding: 0.5em 0.8em;
-}
+        .product-thumb {
+          width: 50px;
+          height: 50px;
+          object-fit: cover;
+          border-radius: 5px;
+        }
+
+        .card-header h5 {
+          display: flex;
+          align-items: center;
+        }
+
+        .table-hover tbody tr:hover {
+          background-color: rgba(108, 99, 255, 0.05);
+        }
+
+        .badge {
+          font-weight: 500;
+          padding: 0.5em 0.8em;
+        }
       }
     </style>
     {% block extra_css %}{% endblock %}
@@ -1284,8 +1284,8 @@ input[type="radio"]:checked + .radio-custom::after {
           <a href="{% url 'about' %}">About</a>
           <a href="{% url 'contact' %}">Contact</a>
 
-         <div class="nav-buttons">
-    {% if user.is_authenticated %}
+          <div class="nav-buttons">
+        {% if user.is_authenticated %}
         {% if user.user_type == 'seller' %}
             <a href="{% url 'seller_dashboard' %}" class="btn">S-Dashboard</a>
             <a href="{% url 'add_product' %}" class="btn">Add Product</a>
@@ -1293,15 +1293,18 @@ input[type="radio"]:checked + .radio-custom::after {
             <a href="{% url 'user_dashboard' %}" class="btn">My Account</a>
         {% endif %}
         <a href="{% url 'logout' %}" class="btn btn-outline">Logout</a>
+
+        <!-- Show Cart only when logged in -->
+        <a href="{% url 'cart' %}" class="cart-icon">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-count">{{ cart_count }}</span>
+        </a>
     {% else %}
         <a href="{% url 'login' %}" class="btn btn-outline">Login</a>
         <a href="{% url 'register' %}" class="btn">Register</a>
     {% endif %}
-    <a href="{% url 'cart' %}" class="cart-icon">
-        <i class="fas fa-shopping-cart"></i>
-        <span class="cart-count">{{ cart_count }}</span>
-    </a>
 </div>
+
         </div>
       </nav>
     </header>
@@ -1344,24 +1347,6 @@ input[type="radio"]:checked + .radio-custom::after {
             <li><a href="{% url 'return_policy' %}">Return Policy</a></li>
             <li><a href="{% url 'shipping_info' %}">Shipping Info</a></li>
           </ul>
-        </div>
-        <div class="footer-col">
-          <h3>Newsletter</h3>
-          <p>Subscribe for updates and discounts</p>
-          <form
-            class="newsletter-form"
-            method="post"
-            action="{% url 'subscribe' %}"
-          >
-            {% csrf_token %}
-            <input
-              type="email"
-              name="email"
-              placeholder="Your email"
-              required
-            />
-            <button type="submit">Subscribe</button>
-          </form>
         </div>
       </div>
       <div class="copyright">
