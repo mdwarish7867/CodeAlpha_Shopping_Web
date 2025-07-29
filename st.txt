@@ -1,0 +1,65 @@
+CODEALPHA_SHOPPING_WEB/
+├── NexusShop-backend/
+│   ├── config/
+│   │   ├── cloudinary.js
+│   │   └── db.js
+│   ├── controllers/
+│   │   ├── authController.js
+│   │   ├── cartController.js
+│   │   └── productController.js
+│   ├── middleware/
+│   │   ├── auth.js
+│   │   └── error.js
+│   ├── models/
+│   │   ├── Cart.js
+│   │   ├── Product.js
+│   │   └── User.js
+│   ├── routes/
+│   │   ├── adminRoutes.js
+│   │   ├── authRoutes.js
+│   │   └── productRoutes.js
+│   ├── utils/
+│   │   ├── generateToken.js
+│   │   └── seedCategories.js
+│   ├── .env
+│   ├── package.json
+│   ├── package-lock.json
+│   └── server.js
+│
+├── nexusshop-frontend/
+│   ├── node_modules/
+│   ├── public/
+│   ├── src/
+│   │   ├── context/
+│   │   │   ├── AuthContext.jsx
+│   │   │   ├── CartContext.jsx         // NEW
+│   │   │   └── WishlistContext.jsx     // NEW
+│   │   ├── components/
+│   │   │   ├── layout/
+│   │   │   │   ├── Navbar.jsx
+│   │   │   │   └── Footer.jsx          // NEW
+│   │   ├── pages/
+│   │   │   ├── auth/
+│   │   │   │   ├── Login.jsx           // NEW
+│   │   │   │   └── Register.jsx        // NEW
+│   │   │   ├── dashboard/
+│   │   │   │   ├── Dashboard.jsx       // NEW
+│   │   │   │   └── SellerDashboard.jsx // NEW
+│   │   │   ├── products/
+│   │   │   │   ├── ProductList.jsx     // NEW
+│   │   │   │   └── ProductDetails.jsx  // NEW
+│   │   │   ├── cart/
+│   │   │   │   └── CartPage.jsx        // NEW
+│   │   │   ├── wishlist/
+│   │   │   │   └── WishlistPage.jsx    // NEW
+│   │   │   ├── static/
+│   │   │   │   ├── About.jsx           // NEW
+│   │   │   │   ├── Contact.jsx         // NEW
+│   │   │   │   └── FAQ.jsx             // NEW
+│   │   │   └── NotFound.jsx            // NEW
+│   │   ├── App.jsx
+│   │   └── index.js
+│   ├── package.json
+│   └── package-lock.json
+│
+└── README.md (Optional)
