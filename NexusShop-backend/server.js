@@ -1,4 +1,4 @@
-// NexusShop-backend/server.js
+// server.js (temporary debug version)
 require("dotenv").config();
 const express = require("express");
 const connectDB = require("./config/db");
@@ -21,23 +21,21 @@ app.use(
   })
 );
 
-// API Routes
-app.use("/api/auth", require("./routes/authRoutes"));
-app.use("/api/users", require("./routes/userRoutes"));
-app.use("/api/products", require("./routes/productRoutes"));
-app.use("/api/categories", require("./routes/categoryRoutes"));
-app.use("/api/cart", require("./routes/cartRoutes"));
-app.use("/api/wishlist", require("./routes/wishlistRoutes"));
-app.use("/api/admin", require("./routes/adminRoutes"));
+// Test route
+app.get("/", (req, res) => {
+  res.send("NexusShop Backend is running");
+});
 
-// Serve static assets in production
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/build")));
+// COMMENT OUT ALL ROUTES TEMPORARILY
 
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "../frontend", "build", "index.html"));
-  });
-}
+app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/users', require('./routes/userRoutes'));
+app.use('/api/products', require('./routes/productRoutes'));
+app.use('/api/categories', require('./routes/categoryRoutes'));
+app.use('/api/cart', require('./routes/cartRoutes'));
+app.use('/api/wishlist', require('./routes/wishlistRoutes'));
+app.use('/api/admin', require('./routes/adminRoutes'));
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-router.get("/users", (req, res) => {
-  res.json({ message: "Admin users route" });
+router.get("/profile", (req, res) => {
+  res.json({ message: "User profile route" });
 });
 
 module.exports = router;
