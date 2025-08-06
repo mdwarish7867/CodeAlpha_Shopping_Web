@@ -17,6 +17,8 @@ import About from "./pages/static/About";
 import Contact from "./pages/static/Contact";
 import FAQ from "./pages/static/FAQ";
 import NotFound from "./pages/NotFound";
+import AddEditProduct from "./pages/products/AddEditProduct";
+
 
 function App() {
   return (
@@ -32,6 +34,8 @@ function App() {
                   <Route path="/login" element={<Login />} />
                   <Route path="/register" element={<Register />} />
                   <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/products/new" element={<AddEditProduct />} />
+                  <Route path="/products/edit/:id" element={<AddEditProduct />} />
                   <Route path="/seller-dashboard" element={<SellerDashboard />} />
                   <Route path="/products" element={<ProductList />} />
                   <Route path="/products/:id" element={<ProductDetails />} />

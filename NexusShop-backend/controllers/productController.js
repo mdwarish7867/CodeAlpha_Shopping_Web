@@ -1,44 +1,25 @@
 const Product = require("../models/Product");
+const Category = require("../models/Category");
 
-// @desc    Get all products
-// @route   GET /api/products
-const getProducts = async (req, res) => {
-  try {
-    const products = await Product.find()
-      .populate("category", "name")
-      .populate("seller", "username");
-    res.json(products);
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
-// @desc    Get single product
-// @route   GET /api/products/:id
-const getProductById = async (req, res) => {
-  try {
-    const product = await Product.findById(req.params.id)
-      .populate("category", "name")
-      .populate("seller", "username");
-
-    if (!product) {
-      return res.status(404).json({ message: "Product not found" });
-    }
-
-    res.json(product);
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
-// @desc    Get seller products
-// @route   GET /api/products/seller/products
+// @desc    Get seller's products
+// @route   GET /api/products/seller
+// controllers/productController.js
 const getSellerProducts = async (req, res) => {
   try {
-    const products = await Product.find({ seller: req.user.userId });
+    // Use consistent user ID field
+    const sellerId = req.user.userId || req.user.id;
+    
+    const products = await Product.find({ seller: sellerId })
+      .populate("categories", "name")
+      .populate("seller", "username");
+      
     res.json(products);
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    console.error('Get seller products error:', error);
+    res.status(500).json({ 
+      message: "Server error",
+      error: error.message
+    });
   }
 };
 
@@ -46,22 +27,44 @@ const getSellerProducts = async (req, res) => {
 // @route   POST /api/products
 const createProduct = async (req, res) => {
   try {
-    const { name, description, price, category, images, stock } = req.body;
+    const { name, description, price, categories, images, stock } = req.body;
+
+    // Validate categories
+    if (!Array.isArray(categories) || categories.length === 0) {
+      return res
+        .status(400)
+        .json({ message: "At least one category is required" });
+    }
+
+    // Check if all categories exist
+    const categoriesExist = await Category.find({ _id: { $in: categories } });
+    if (categoriesExist.length !== categories.length) {
+      return res
+        .status(400)
+        .json({ message: "One or more categories are invalid" });
+    }
+
+    // Use consistent user ID
+    const sellerId = req.user.userId || req.user.id;
 
     const product = new Product({
       name,
       description,
-      price,
-      category,
-      seller: req.user.userId,
-      images,
-      stock,
+      price: parseFloat(price),
+      categories,
+      seller: sellerId,
+      images: Array.isArray(images) ? images : [images],
+      stock: parseInt(stock),
     });
 
     const createdProduct = await product.save();
     res.status(201).json(createdProduct);
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    console.error("Create product error:", error);
+    res.status(500).json({
+      message: "Server error",
+      error: error.message,
+    });
   }
 };
 
@@ -69,7 +72,7 @@ const createProduct = async (req, res) => {
 // @route   PUT /api/products/:id
 const updateProduct = async (req, res) => {
   try {
-    const { name, description, price, category, images, stock } = req.body;
+    const { name, description, price, categories, images, stock } = req.body;
 
     const product = await Product.findById(req.params.id);
 
@@ -77,27 +80,52 @@ const updateProduct = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // Check if logged in user is the seller or admin
-    if (
-      product.seller.toString() !== req.user.userId &&
-      req.user.userType !== "admin"
-    ) {
+    // Use consistent user ID
+    const userId = req.user.userId || req.user.id;
+
+    if (product.seller.toString() !== userId) {
       return res
         .status(401)
         .json({ message: "Not authorized to update this product" });
     }
 
+    // Validate categories if provided
+    if (categories) {
+      if (!Array.isArray(categories) || categories.length === 0) {
+        return res
+          .status(400)
+          .json({ message: "At least one category is required" });
+      }
+
+      // Check if all categories exist
+      const categoriesExist = await Category.find({ _id: { $in: categories } });
+      if (categoriesExist.length !== categories.length) {
+        return res
+          .status(400)
+          .json({ message: "One or more categories are invalid" });
+      }
+    }
+
+    // Update fields
     product.name = name || product.name;
     product.description = description || product.description;
-    product.price = price || product.price;
-    product.category = category || product.category;
-    product.images = images || product.images;
-    product.stock = stock || product.stock;
+    product.price = price ? parseFloat(price) : product.price;
+    product.categories = Array.isArray(categories)
+      ? categories
+      : product.categories;
+    product.images = Array.isArray(images)
+      ? images
+      : [images] || product.images;
+    product.stock = stock ? parseInt(stock) : product.stock;
 
     const updatedProduct = await product.save();
     res.json(updatedProduct);
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    console.error("Update product error:", error);
+    res.status(500).json({
+      message: "Server error",
+      error: error.message,
+    });
   }
 };
 
@@ -111,28 +139,51 @@ const deleteProduct = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // Check if logged in user is the seller or admin
-    if (
-      product.seller.toString() !== req.user.userId &&
-      req.user.userType !== "admin"
-    ) {
+    // Use consistent user ID
+    const userId = req.user.userId || req.user.id;
+
+    if (product.seller.toString() !== userId) {
       return res
         .status(401)
         .json({ message: "Not authorized to delete this product" });
     }
 
-    await product.remove();
+    await product.deleteOne();
     res.json({ message: "Product removed" });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
 };
 
+// Get single product
+// Update getProductById to better handle seller information
+// Get single product
+const getProductById = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id)
+      .populate("categories", "name")
+      .populate("seller", "_id username"); // Ensure _id is included
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.json({
+      ...product._doc,
+      seller: {
+        _id: product.seller._id.toString(),
+        username: product.seller.username
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
-  getProducts,
-  getProductById,
   getSellerProducts,
   createProduct,
   updateProduct,
   deleteProduct,
+  getProductById,
 };

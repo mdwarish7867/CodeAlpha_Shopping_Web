@@ -1,12 +1,21 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
 
 // Generate JWT and set cookie
 const generateToken = (res, userId, userType) => {
-  const token = jwt.sign({ userId, userType }, process.env.JWT_SECRET, {
-    expiresIn: "30d",
-  });
+  // Create token with backward compatible fields
+  const token = jwt.sign(
+    {
+      id: userId, // for backward compatibility (used in product middleware)
+      userId: userId, // new standard
+      role: userType, // for backward compatibility (if needed)
+      userType: userType, // new standard
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "30d",
+    }
+  );
 
   res.cookie("token", token, {
     httpOnly: true,
@@ -79,6 +88,8 @@ const logoutUser = (req, res) => {
 
 // @desc    Check authentication status
 // @route   GET /api/auth/check
+// @desc    Check authentication status
+// @route   GET /api/auth/check
 const checkAuth = async (req, res) => {
   try {
     const token = req.cookies.token;
@@ -94,6 +105,7 @@ const checkAuth = async (req, res) => {
       return res.status(401).json({ message: "User not found" });
     }
 
+    // Ensure _id is returned
     res.json({
       _id: user._id,
       username: user.username,
