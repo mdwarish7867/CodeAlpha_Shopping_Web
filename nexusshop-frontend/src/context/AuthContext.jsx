@@ -1,58 +1,113 @@
-// context/AuthContext.jsx
 import { createContext, useContext, useEffect, useState } from 'react';
-import axios from 'axios';
 
 const AuthContext = createContext();
 
-export const useAuth = () => useContext(AuthContext);
-
-export const AuthProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null);
+export function AuthProvider({ children }) {
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        if (token) {
-          const res = await axios.get('/api/auth/me', {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          setCurrentUser(res.data);
-        }
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const API_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
 
-    checkAuth();
+  useEffect(() => {
+    checkUserLoggedIn();
   }, []);
 
-  const login = async (token) => {
-    localStorage.setItem('token', token);
-    const res = await axios.get('/api/auth/me', {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    setCurrentUser(res.data);
+  const checkUserLoggedIn = async () => {
+    try {
+      const response = await fetch(`${API_URL}/api/auth/check`, {
+        credentials: 'include'
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setUser(data);
+      }
+    } catch (error) {
+      console.error('Auth check failed:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    setCurrentUser(null);
+  const login = async (email, password) => {
+    try {
+      const response = await fetch(`${API_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+        credentials: 'include'
+      });
+      
+      if (!response.ok) {
+        try {
+          const errorData = await response.json();
+          return { success: false, message: errorData.message || 'Login failed' };
+        } catch {
+          return { success: false, message: 'Login failed' };
+        }
+      }
+      
+      const data = await response.json();
+      setUser(data);
+      return { success: true, user: data };
+    } catch (error) {
+      console.error('Login error:', error);
+      return { success: false, message: 'Network error. Please try again.' };
+    }
+  };
+
+  const register = async (username, email, password, userType) => {
+    try {
+      const response = await fetch(`${API_URL}/api/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, email, password, userType }),
+        credentials: 'include'
+      });
+      
+      if (!response.ok) {
+        try {
+          const errorData = await response.json();
+          return { success: false, message: errorData.message || 'Registration failed' };
+        } catch {
+          return { success: false, message: 'Registration failed' };
+        }
+      }
+      
+      const data = await response.json();
+      setUser(data);
+      return { success: true, user: data };
+    } catch (error) {
+      console.error('Registration error:', error);
+      return { success: false, message: 'Network error. Please try again.' };
+    }
+  };
+
+  const logout = async () => {
+    try {
+      await fetch(`${API_URL}/api/auth/logout`, { 
+        method: 'POST',
+        credentials: 'include'
+      });
+      setUser(null);
+      return { success: true };
+    } catch (error) {
+      console.error('Logout error:', error);
+      return { success: false, message: 'Logout failed' };
+    }
   };
 
   const value = {
-    currentUser,
+    user,
+    loading,
     login,
-    logout,
-    loading
+    register,
+    logout
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {!loading && children}
-    </AuthContext.Provider>
-  );
-};
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}
+
+export function useAuth() {
+  return useContext(AuthContext);
+}

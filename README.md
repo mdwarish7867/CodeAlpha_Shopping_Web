@@ -1,7 +1,7 @@
 # NexusShop - Full Stack E-commerce Platform (MERN Stack)
 
 **🌐 Live Demo:**
-https://codealpha-shopping-web.onrender.com
+https://codealpha-shopping-web-frontend.onrender.com/
 
 ---
 

@@ -1,10 +1,15 @@
-// Example: routes/authRoutes.js - Fixed
 const express = require("express");
-const router = express.Router(); // Fixed: Use express.Router() directly
-const authController = require("../controllers/authController");
+const router = express.Router();
+const {
+  registerUser,
+  loginUser,
+  logoutUser,
+  checkAuth,
+} = require("../controllers/authController");
 
-router.post("/register", authController.registerUser);
-router.post("/login", authController.loginUser);
-router.post("/logout", authController.logoutUser);
+router.post("/register", registerUser);
+router.post("/login", loginUser);
+router.post("/logout", logoutUser);
+router.get("/check", checkAuth);
 
 module.exports = router;

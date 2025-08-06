@@ -20,10 +20,10 @@ import NotFound from "./pages/NotFound";
 
 function App() {
   return (
-    <AuthProvider>
-      <CartProvider>
-        <WishlistProvider>
-          <Router>
+    <Router>
+      <AuthProvider>
+        <CartProvider>
+          <WishlistProvider>
             <div className="flex flex-col min-h-screen">
               <Navbar />
               <main className="flex-grow">
@@ -32,10 +32,7 @@ function App() {
                   <Route path="/login" element={<Login />} />
                   <Route path="/register" element={<Register />} />
                   <Route path="/dashboard" element={<Dashboard />} />
-                  <Route
-                    path="/seller-dashboard"
-                    element={<SellerDashboard />}
-                  />
+                  <Route path="/seller-dashboard" element={<SellerDashboard />} />
                   <Route path="/products" element={<ProductList />} />
                   <Route path="/products/:id" element={<ProductDetails />} />
                   <Route path="/cart" element={<CartPage />} />
@@ -48,10 +45,10 @@ function App() {
               </main>
               <Footer />
             </div>
-          </Router>
-        </WishlistProvider>
-      </CartProvider>
-    </AuthProvider>
+          </WishlistProvider>
+        </CartProvider>
+      </AuthProvider>
+    </Router>
   );
 }
 

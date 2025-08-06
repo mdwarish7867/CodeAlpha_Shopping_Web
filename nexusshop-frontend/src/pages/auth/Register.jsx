@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
@@ -15,42 +15,64 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (password !== confirmPassword) {
-      return setError("Passwords don't match");
-    }
-    
     setError('');
     setLoading(true);
     
-    try {
-      // In a real app, you would call your API here
-      await register({ username, email, password, userType });
-      navigate('/');
-    } catch (err) {
-      setError('Failed to register: ' + err.message);
+    // Basic validation
+    if (!username || !email || !password || !confirmPassword) {
+      setError('All fields are required');
+      setLoading(false);
+      return;
+    }
+    
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      setLoading(false);
+      return;
+    }
+    
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters');
+      setLoading(false);
+      return;
+    }
+    
+    // Attempt registration
+    const result = await register(username, email, password, userType);
+    
+    if (result.success) {
+      navigate(userType === 'seller' ? '/seller-dashboard' : '/dashboard');
+    } else {
+      // Ensure we only set string errors
+      setError(result.message || 'Registration failed');
     }
     
     setLoading(false);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+    <div className="flex items-center justify-center min-h-screen px-4 py-12 bg-gray-50 sm:px-6 lg:px-8">
+      <div className="w-full max-w-md space-y-8">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          <h2 className="mt-6 text-3xl font-extrabold text-center text-gray-900">
             Create a new account
           </h2>
+          <p className="mt-2 text-sm text-center text-gray-600">
+            Or{' '}
+            <Link to="/login" className="font-medium text-primary hover:text-secondary">
+              sign in to your existing account
+            </Link>
+          </p>
         </div>
         
         {error && (
-          <div className="bg-red-50 text-red-500 p-3 rounded-md">
+          <div className="relative px-4 py-3 text-red-700 bg-red-100 border border-red-400 rounded" role="alert">
             {error}
           </div>
         )}
         
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm -space-y-px">
+          <div className="-space-y-px rounded-md shadow-sm">
             <div>
               <label htmlFor="username" className="sr-only">
                 Username
@@ -59,8 +81,9 @@ const Register = () => {
                 id="username"
                 name="username"
                 type="text"
+                autoComplete="username"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
+                className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-t-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
                 placeholder="Username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
@@ -76,7 +99,7 @@ const Register = () => {
                 type="email"
                 autoComplete="email"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
+                className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
                 placeholder="Email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -90,8 +113,9 @@ const Register = () => {
                 id="password"
                 name="password"
                 type="password"
+                autoComplete="new-password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
+                className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -105,8 +129,9 @@ const Register = () => {
                 id="confirm-password"
                 name="confirm-password"
                 type="password"
+                autoComplete="new-password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
+                className="relative block w-full px-3 py-2 text-gray-900 placeholder-gray-500 border border-gray-300 rounded-none appearance-none rounded-b-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
                 placeholder="Confirm Password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
@@ -115,32 +140,36 @@ const Register = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block mb-2 text-sm font-medium text-gray-700">
               Register as:
             </label>
-            <div className="grid grid-cols-2 gap-4">
-              <button
-                type="button"
-                className={`py-2 px-4 rounded-md text-sm font-medium ${
-                  userType === 'user'
-                    ? 'bg-primary text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
-                onClick={() => setUserType('user')}
-              >
-                Customer
-              </button>
-              <button
-                type="button"
-                className={`py-2 px-4 rounded-md text-sm font-medium ${
-                  userType === 'seller'
-                    ? 'bg-primary text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
-                onClick={() => setUserType('seller')}
-              >
-                Seller
-              </button>
+            <div className="flex space-x-4">
+              <div className="flex items-center">
+                <input
+                  id="user-type-user"
+                  name="user-type"
+                  type="radio"
+                  className="w-4 h-4 border-gray-300 focus:ring-primary text-primary"
+                  checked={userType === 'user'}
+                  onChange={() => setUserType('user')}
+                />
+                <label htmlFor="user-type-user" className="block ml-2 text-sm text-gray-900">
+                  Customer
+                </label>
+              </div>
+              <div className="flex items-center">
+                <input
+                  id="user-type-seller"
+                  name="user-type"
+                  type="radio"
+                  className="w-4 h-4 border-gray-300 focus:ring-primary text-primary"
+                  checked={userType === 'seller'}
+                  onChange={() => setUserType('seller')}
+                />
+                <label htmlFor="user-type-seller" className="block ml-2 text-sm text-gray-900">
+                  Seller
+                </label>
+              </div>
             </div>
           </div>
 
@@ -148,21 +177,14 @@ const Register = () => {
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+              className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary ${
+                loading ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
             >
-              Register
+              {loading ? 'Creating account...' : 'Register'}
             </button>
           </div>
         </form>
-        
-        <div className="text-center mt-4">
-          <p className="text-sm text-gray-600">
-            Already have an account?{' '}
-            <Link to="/login" className="font-medium text-primary hover:text-secondary">
-              Sign in
-            </Link>
-          </p>
-        </div>
       </div>
     </div>
   );
