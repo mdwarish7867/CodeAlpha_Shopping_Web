@@ -23,35 +23,36 @@ const Navbar = () => {
           </div>
           
           <div className="flex items-center">
-            {user ? (
-              <div className="flex items-center space-x-4">
-                {/* Show Seller Dashboard only for sellers */}
-                {user.userType === 'seller' && (
-                  <Link to="/seller-dashboard" className="text-gray-700 hover:text-primary">
-                    Seller Dashboard
-                  </Link>
-                )}
-                
-                {/* Show Dashboard only for regular users */}
-                {user.userType === 'user' && (
-                  <Link to="/dashboard" className="text-gray-700 hover:text-primary">
-                    Dashboard
-                  </Link>
-                )}
-                
-                <Link to="/cart" className="text-gray-700 hover:text-primary">
-                  Cart
-                </Link>
-                <Link to="/wishlist" className="text-gray-700 hover:text-primary">
-                  Wishlist
-                </Link>
-                <button 
-                  onClick={handleLogout}
-                  className="text-gray-700 hover:text-primary"
-                >
-                  Logout
-                </button>
-              </div>
+  {user ? (
+    <div className="flex items-center space-x-4">
+      {/* Show Seller Dashboard only for sellers */}
+      {user.userType === 'seller' && (
+        <Link to="/seller-dashboard" className="text-gray-700 hover:text-primary">
+          Seller Dashboard
+        </Link>
+      )}
+      
+      {/* Show Dashboard only for regular users */}
+      {user.userType === 'user' && (
+        <Link to="/dashboard" className="text-gray-700 hover:text-primary">
+          Dashboard
+        </Link>
+      )}
+
+      {user.userType === 'user' && (
+        <Link to="/cart" className="text-gray-700 hover:text-primary">
+          Cart
+        </Link>
+      )}
+      
+      
+      <button 
+        onClick={handleLogout}
+        className="text-gray-700 hover:text-primary"
+      >
+        Logout
+      </button>
+    </div>
             ) : (
               <div className="flex space-x-4">
                 <Link to="/login" className="text-gray-700 hover:text-primary">

@@ -18,15 +18,20 @@ const Login = () => {
     const result = await login(email, password);
     
     if (result.success) {
-      navigate('/dashboard');
+      const userType = result.user.userType;  // <-- Get userType from response
+      if (userType === 'seller') {
+        navigate('/seller-dashboard');
+      } else if (userType === 'user') {
+        navigate('/dashboard');
+      } else {
+        navigate('/');  // fallback redirect if userType is unknown
+      }
     } else {
-      // Only set the message part as error
       setError(result.message || 'Invalid credentials');
     }
     
     setLoading(false);
   };
-
   return (
     <div className="flex items-center justify-center min-h-screen px-4 py-12 bg-gray-50 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">
