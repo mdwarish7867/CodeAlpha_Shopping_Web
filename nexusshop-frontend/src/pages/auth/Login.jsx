@@ -10,28 +10,40 @@ const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
-    
+  // Login.js
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError('');
+  setLoading(true);
+  
+  try {
     const result = await login(email, password);
     
     if (result.success) {
-      const userType = result.user.userType;  // <-- Get userType from response
-      if (userType === 'seller') {
-        navigate('/seller-dashboard');
-      } else if (userType === 'user') {
-        navigate('/dashboard');
+      // Add safety check for user object
+      if (result.user?.userType) {
+        if (result.user.userType === 'seller') {
+          navigate('/seller-dashboard');
+        } else if (result.user.userType === 'user') {
+          navigate('/products');
+        } else {
+          navigate('/');
+        }
       } else {
-        navigate('/');  // fallback redirect if userType is unknown
+        // Handle case where userType is missing
+        setError('User information incomplete. Please contact support.');
       }
     } else {
       setError(result.message || 'Invalid credentials');
     }
-    
+  } catch (err) {
+    setError('An unexpected error occurred');
+    console.error(err);
+  } finally {
     setLoading(false);
-  };
+  }
+};
+
   return (
     <div className="flex items-center justify-center min-h-screen px-4 py-12 bg-gray-50 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">

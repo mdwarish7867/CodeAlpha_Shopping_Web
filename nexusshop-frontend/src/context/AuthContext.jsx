@@ -37,31 +37,33 @@ export const AuthProvider = ({ children }) => {
   }, [API_BASE_URL]);
 
   // Login function
-  const login = async (email, password) => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-        credentials: 'include'
-      });
+ // AuthContext.js
+const login = async (email, password) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+      credentials: 'include'
+    });
 
-      if (response.ok) {
-        const data = await response.json();
-        setUser({
-          _id: data._id,          // Standard MongoDB ID
-          userId: data._id,        // Alias for compatibility
-          ...data
-        });
-        return { success: true };
-      } else {
-        const errorData = await response.json();
-        return { success: false, message: errorData.message };
-      }
-    } catch (error) {
-      return { success: false, message: 'Network error' };
+    if (response.ok) {
+      const data = await response.json();
+      const userData = {
+        _id: data._id,
+        userId: data._id,
+        ...data
+      };
+      setUser(userData);
+      return { success: true, user: userData }; // Return user data here
+    } else {
+      const errorData = await response.json();
+      return { success: false, message: errorData.message };
     }
-  };
+  } catch (error) {
+    return { success: false, message: 'Network error' };
+  }
+};
 
   // Register function
   const register = async (username, email, password, userType) => {
@@ -103,13 +105,39 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const updatePassword = async (currentPassword, newPassword) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/users/update-password`, {
+        method: 'PUT',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        credentials: 'include',
+        body: JSON.stringify({ currentPassword, newPassword })
+      });
+
+      if (response.ok) {
+        return { success: true };
+      } else {
+        const errorData = await response.json();
+        return { success: false, message: errorData.message || 'Password update failed' };
+      }
+    } catch (error) {
+      return { success: false, message: 'Network error' };
+    }
+  };
+
   const value = {
     user,
     loading,
     login,
     logout,
-    register
+    register,
+    updatePassword
   };
+
+  
 
   return (
     <AuthContext.Provider value={value}>

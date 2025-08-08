@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import axios from 'axios';
 import { useAuth } from './AuthContext';
 
 const CartContext = createContext();
@@ -9,13 +8,26 @@ export const useCart = () => useContext(CartContext);
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { currentUser } = useAuth();
+  const { user } = useAuth();
+  const API_BASE = process.env.REACT_APP_BACKEND_URL || '';
 
   const fetchCart = async () => {
-    if (!currentUser) return;
+    if (!user) {
+      setCart([]);
+      setLoading(false);
+      return;
+    }
     
     try {
-      const { data } = await axios.get('/api/cart');
+      const response = await fetch(`${API_BASE}/api/cart`, {
+        credentials: 'include'
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch cart');
+      }
+      
+      const data = await response.json();
       setCart(data.items || []);
     } catch (error) {
       console.error('Failed to fetch cart:', error);
@@ -25,8 +37,26 @@ export const CartProvider = ({ children }) => {
   };
 
   const addToCart = async (productId, quantity = 1) => {
+    if (!user) {
+      console.log('User must be logged in to add to cart');
+      return;
+    }
+    
     try {
-      const { data } = await axios.post('/api/cart', { productId, quantity });
+      const response = await fetch(`${API_BASE}/api/cart`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify({ productId, quantity })
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to add to cart');
+      }
+      
+      const data = await response.json();
       setCart(data.items);
     } catch (error) {
       console.error('Failed to add to cart:', error);
@@ -35,23 +65,59 @@ export const CartProvider = ({ children }) => {
 
   const removeFromCart = async (productId) => {
     try {
-      const { data } = await axios.delete(`/api/cart/${productId}`);
+      const response = await fetch(`${API_BASE}/api/cart/${productId}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to remove from cart');
+      }
+      
+      const data = await response.json();
       setCart(data.items);
     } catch (error) {
       console.error('Failed to remove from cart:', error);
     }
   };
 
+  // FIXED: Proper implementation for quantity update
+  const updateCartItemQuantity = async (productId, newQuantity) => {
+    try {
+      const response = await fetch(`${API_BASE}/api/cart/${productId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify({ quantity: newQuantity })
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to update cart item quantity');
+      }
+      
+      const data = await response.json();
+      setCart(data.items);
+    } catch (error) {
+      console.error('Failed to update cart item quantity:', error);
+    }
+  };
+
   useEffect(() => {
-    if (currentUser) fetchCart();
-    else setCart([]);
-  }, [currentUser]);
+    fetchCart();
+  }, [user]);
+
+  const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+  const cartTotal = cart.reduce((total, item) => total + (item.product?.price || 0) * item.quantity, 0);
 
   const value = {
     cart,
     addToCart,
     removeFromCart,
-    cartCount: cart.reduce((total, item) => total + item.quantity, 0),
+    updateCartItemQuantity,
+    cartCount,
+    cartTotal,
     loading
   };
 

@@ -23,6 +23,27 @@ const getSellerProducts = async (req, res) => {
   }
 };
 
+// Backend controller for GET /api/products
+const getProducts = async (req, res) => {
+  try {
+    const products = await Product.find({})
+      .populate('categories', 'name')
+      .populate('seller', 'username');
+    res.json(products);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Backend controller for GET /api/categories
+const getCategories = async (req, res) => {
+  try {
+    const categories = await Category.find({}, 'name');
+    res.json(categories);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
 // @desc    Create a product
 // @route   POST /api/products
 const createProduct = async (req, res) => {
@@ -186,4 +207,6 @@ module.exports = {
   updateProduct,
   deleteProduct,
   getProductById,
+  getProducts,
+  getCategories
 };

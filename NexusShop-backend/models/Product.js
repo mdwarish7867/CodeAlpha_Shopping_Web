@@ -17,7 +17,12 @@ const productSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    images: [{ type: String }],
+    images: [
+      {
+        type: String,
+        default: [],
+      },
+    ],
     rating: { type: Number, default: 0 },
     numReviews: { type: Number, default: 0 },
     stock: { type: Number, required: true, default: 0 },

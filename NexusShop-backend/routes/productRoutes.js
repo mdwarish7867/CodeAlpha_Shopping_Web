@@ -1,8 +1,8 @@
-// routes/productRoutes.js
 const express = require("express");
 const router = express.Router();
 const { protect } = require("../middleware/auth");
 const {
+  getProducts,
   getSellerProducts,
   createProduct,
   updateProduct,
@@ -10,13 +10,14 @@ const {
   getProductById,
 } = require("../controllers/productController");
 
-// Seller-specific routes
+// Public routes
+router.get("/", getProducts);
+router.get("/:id", getProductById);
+
+// Protected routes (seller)
 router.get("/seller", protect, getSellerProducts);
 router.post("/", protect, createProduct);
 router.put("/:id", protect, updateProduct);
 router.delete("/:id", protect, deleteProduct);
-
-// Public routes
-router.get("/:id", getProductById);
 
 module.exports = router;
