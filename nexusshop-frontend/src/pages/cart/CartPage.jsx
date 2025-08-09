@@ -10,7 +10,7 @@ const CartPage = () => {
   const [updatingItems, setUpdatingItems] = useState({});
   const navigate = useNavigate();
 
-  // FIXED: Handle quantity change with validation
+  // Handle quantity change with validation
   const handleQuantityChange = async (productId, newQuantity) => {
     if (newQuantity < 1) return; // Prevent negative quantities
     
@@ -35,6 +35,14 @@ const CartPage = () => {
       setLoading(false);
       navigate('/checkout');
     }, 1500);
+  };
+
+  // Calculate subtotal safely
+  const calculateSubtotal = () => {
+    return cart.reduce((sum, item) => {
+      const price = item.product?.price || 0;
+      return sum + (price * item.quantity);
+    }, 0).toFixed(2);
   };
 
   return (
@@ -66,69 +74,76 @@ const CartPage = () => {
                 <div className="col-span-2 text-center">Total</div>
               </div>
               
-              {cart.map(item => (
-                <div key={item.product._id} className="grid grid-cols-1 p-4 border-b md:grid-cols-12">
-                  <div className="flex items-center col-span-6 mb-4 md:mb-0">
-                    <img 
-                      src={item.product.images?.[0] || 'https://via.placeholder.com/80'} 
-                      alt={item.product.name} 
-                      className="w-16 h-16 mr-4 rounded"
-                    />
-                    <div>
-                      <h3 className="font-medium">{item.product.name}</h3>
-                      <button 
-                        onClick={() => removeFromCart(item.product._id)}
-                        className="mt-1 text-sm text-red-500 hover:text-red-700"
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center col-span-2 mb-4 md:mb-0">
-                    <span className="mr-2 font-medium md:hidden">Price:</span>
-                    <span>${item.product.price.toFixed(2)}</span>
-                  </div>
-                  
-                  <div className="flex items-center col-span-2 mb-4 md:mb-0">
-                    <span className="mr-2 font-medium md:hidden">Quantity:</span>
-                    <div className="flex items-center mx-auto">
-                      <button 
-                        onClick={() => handleQuantityChange(item.product._id, item.quantity - 1)}
-                        disabled={updatingItems[item.product._id]}
-                        className="px-3 py-1 text-gray-600 bg-gray-100 border rounded-l disabled:opacity-50"
-                      >
-                        -
-                      </button>
-                      <input
-                        type="number"
-                        min="1"
-                        value={item.quantity}
-                        onChange={e => {
-                          const value = parseInt(e.target.value) || 1;
-                          handleQuantityChange(item.product._id, value);
-                        }}
-                        className="w-12 py-1 text-center border-y"
+              {cart.map(item => {
+                // Check if product exists before rendering
+                if (!item.product) return null;
+                
+                return (
+                  <div key={item.product._id} className="grid grid-cols-1 p-4 border-b md:grid-cols-12">
+                    <div className="flex items-center col-span-6 mb-4 md:mb-0">
+                      <img 
+                        src={item.product.images?.[0] || 'https://via.placeholder.com/80'} 
+                        alt={item.product.name || 'Product'} 
+                        className="w-16 h-16 mr-4 rounded"
                       />
-                      <button 
-                        onClick={() => handleQuantityChange(item.product._id, item.quantity + 1)}
-                        disabled={updatingItems[item.product._id]}
-                        className="px-3 py-1 text-gray-600 bg-gray-100 border rounded-r disabled:opacity-50"
-                      >
-                        +
-                      </button>
+                      <div>
+                        <h3 className="font-medium">{item.product.name || 'Product unavailable'}</h3>
+                        <button 
+                          onClick={() => removeFromCart(item.product._id)}
+                          className="mt-1 text-sm text-red-500 hover:text-red-700"
+                        >
+                          Remove
+                        </button>
+                      </div>
                     </div>
-                    {updatingItems[item.product._id] && (
-                      <div className="w-4 h-4 ml-2 border-t-2 border-blue-500 border-solid rounded-full animate-spin"></div>
-                    )}
+                    
+                    <div className="flex items-center col-span-2 mb-4 md:mb-0">
+                      <span className="mr-2 font-medium md:hidden">Price:</span>
+                      <span>${item.product.price?.toFixed(2) || '0.00'}</span>
+                    </div>
+                    
+                    <div className="flex items-center col-span-2 mb-4 md:mb-0">
+                      <span className="mr-2 font-medium md:hidden">Quantity:</span>
+                      <div className="flex items-center mx-auto">
+                        <button 
+                          onClick={() => handleQuantityChange(item.product._id, item.quantity - 1)}
+                          disabled={updatingItems[item.product._id]}
+                          className="px-3 py-1 text-gray-600 bg-gray-100 border rounded-l disabled:opacity-50"
+                        >
+                          -
+                        </button>
+                        <input
+                          type="number"
+                          min="1"
+                          value={item.quantity}
+                          onChange={e => {
+                            const value = parseInt(e.target.value) || 1;
+                            handleQuantityChange(item.product._id, value);
+                          }}
+                          className="w-12 py-1 text-center border-y"
+                        />
+                        <button 
+                          onClick={() => handleQuantityChange(item.product._id, item.quantity + 1)}
+                          disabled={updatingItems[item.product._id]}
+                          className="px-3 py-1 text-gray-600 bg-gray-100 border rounded-r disabled:opacity-50"
+                        >
+                          +
+                        </button>
+                      </div>
+                      {updatingItems[item.product._id] && (
+                        <div className="w-4 h-4 ml-2 border-t-2 border-blue-500 border-solid rounded-full animate-spin"></div>
+                      )}
+                    </div>
+                    
+                    <div className="flex items-center col-span-2">
+                      <span className="mr-2 font-medium md:hidden">Total:</span>
+                      <span className="font-medium">
+                        ${((item.product.price || 0) * item.quantity).toFixed(2)}
+                      </span>
+                    </div>
                   </div>
-                  
-                  <div className="flex items-center col-span-2">
-                    <span className="mr-2 font-medium md:hidden">Total:</span>
-                    <span className="font-medium">${(item.product.price * item.quantity).toFixed(2)}</span>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
           
@@ -139,7 +154,7 @@ const CartPage = () => {
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  <span>${cart.reduce((sum, item) => sum + (item.product.price * item.quantity), 0).toFixed(2)}</span>
+                  <span>${calculateSubtotal()}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Shipping</span>
@@ -152,7 +167,7 @@ const CartPage = () => {
                 <div className="pt-3 mt-3 border-t">
                   <div className="flex justify-between font-bold">
                     <span>Total</span>
-                    <span>${cart.reduce((sum, item) => sum + (item.product.price * item.quantity), 0).toFixed(2)}</span>
+                    <span>${calculateSubtotal()}</span>
                   </div>
                 </div>
               </div>
