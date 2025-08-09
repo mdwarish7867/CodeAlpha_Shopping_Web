@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Cart = require("../models/Cart");
 const Product = require("../models/Product");
 
@@ -5,8 +6,11 @@ const Product = require("../models/Product");
 // @route   GET /api/cart
 const getCart = async (req, res) => {
   try {
-    // Use consistent user ID field
-    const userId = req.user.userId || req.user.id;
+    const userId = req.user.userId || req.user.id || req.user._id;
+
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: "Invalid user ID" });
+    }
 
     const cart = await Cart.findOne({ user: userId }).populate("items.product");
 
@@ -25,7 +29,11 @@ const getCart = async (req, res) => {
 const addToCart = async (req, res) => {
   try {
     const { productId, quantity } = req.body;
-    const userId = req.user.userId || req.user.id;
+    const userId = req.user.userId || req.user.id || req.user._id;
+
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: "Invalid user ID" });
+    }
 
     // Validate product
     const product = await Product.findById(productId);
@@ -58,8 +66,6 @@ const addToCart = async (req, res) => {
     }
 
     await cart.save();
-
-    // Populate product details
     await cart.populate("items.product");
 
     res.json(cart);
@@ -73,7 +79,11 @@ const addToCart = async (req, res) => {
 const removeFromCart = async (req, res) => {
   try {
     const productId = req.params.productId;
-    const userId = req.user.userId || req.user.id;
+    const userId = req.user.userId || req.user.id || req.user._id;
+
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: "Invalid user ID" });
+    }
 
     const cart = await Cart.findOne({ user: userId });
 
@@ -81,14 +91,11 @@ const removeFromCart = async (req, res) => {
       return res.status(404).json({ message: "Cart not found" });
     }
 
-    // Filter out the item
     cart.items = cart.items.filter(
       (item) => item.product.toString() !== productId
     );
 
     await cart.save();
-
-    // Populate product details
     await cart.populate("items.product");
 
     res.json(cart);
@@ -103,9 +110,12 @@ const updateCartItem = async (req, res) => {
   try {
     const { productId } = req.params;
     const { quantity } = req.body;
-    const userId = req.user.userId || req.user.id;
+    const userId = req.user.userId || req.user.id || req.user._id;
 
-    // Validate quantity
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: "Invalid user ID" });
+    }
+
     if (typeof quantity !== "number" || quantity < 1) {
       return res.status(400).json({ message: "Invalid quantity" });
     }
@@ -116,7 +126,6 @@ const updateCartItem = async (req, res) => {
       return res.status(404).json({ message: "Cart not found" });
     }
 
-    // Find the item
     const item = cart.items.find(
       (item) => item.product.toString() === productId
     );
@@ -125,12 +134,9 @@ const updateCartItem = async (req, res) => {
       return res.status(404).json({ message: "Item not found in cart" });
     }
 
-    // Update quantity
     item.quantity = quantity;
 
     await cart.save();
-
-    // Populate product details
     await cart.populate("items.product");
 
     res.json(cart);
@@ -139,7 +145,6 @@ const updateCartItem = async (req, res) => {
   }
 };
 
-// Export all functions
 module.exports = {
   getCart,
   addToCart,

@@ -12,8 +12,8 @@ export const AuthProvider = ({ children }) => {
     const checkAuthStatus = async () => {
       try {
         const response = await fetch(`${API_BASE_URL}/api/auth/check`, {
-          credentials: 'include'
-        });
+  credentials: 'include'  // Ensure this exists in all auth requests
+});
 
         if (response.ok) {
           const data = await response.json();

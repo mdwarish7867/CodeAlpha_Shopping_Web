@@ -37,20 +37,22 @@ export const CartProvider = ({ children }) => {
   };
 
   const addToCart = async (productId, quantity = 1) => {
-    if (!user) {
-      console.log('User must be logged in to add to cart');
-      return;
-    }
-    
-    try {
-      const response = await fetch(`${API_BASE}/api/cart`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        credentials: 'include',
-        body: JSON.stringify({ productId, quantity })
-      });
+  if (!user) {
+    console.error('User must be logged in');
+    return;
+  }
+  
+  try {
+    const response = await fetch(`${API_BASE}/api/cart`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',  // Crucial for cookies
+      body: JSON.stringify({ 
+        productId, 
+        quantity,
+        userId: user.userId || user._id  // Explicitly send user ID
+      })
+    });
       
       if (!response.ok) {
         throw new Error('Failed to add to cart');

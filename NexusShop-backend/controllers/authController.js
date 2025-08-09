@@ -19,9 +19,9 @@ const generateToken = (res, userId, userType) => {
 
   res.cookie("token", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV !== "development",
-    sameSite: "strict",
-    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    secure: process.env.NODE_ENV === "production", // Always true in production
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    maxAge: 30 * 24 * 60 * 60 * 1000,
   });
 };
 
@@ -113,12 +113,13 @@ const checkAuth = async (req, res) => {
 
     res.json({
       _id: user._id,
-      id: user._id.toString(), 
+      userId: user._id.toString(), // Ensure string format
       username: user.username,
       email: user.email,
       userType: user.userType,
     });
   } catch (error) {
+    res.clearCookie("token");
     res.status(401).json({ message: "Not authenticated" });
   }
 };
