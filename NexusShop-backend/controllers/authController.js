@@ -99,15 +99,21 @@ const checkAuth = async (req, res) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.userId).select("-password");
+    const userId = decoded.userId || decoded.id;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Invalid token" });
+    }
+
+    const user = await User.findById(userId).select("-password");
 
     if (!user) {
       return res.status(401).json({ message: "User not found" });
     }
 
-    // Ensure _id is returned
     res.json({
       _id: user._id,
+      id: user._id.toString(), 
       username: user.username,
       email: user.email,
       userType: user.userType,

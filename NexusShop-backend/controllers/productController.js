@@ -1,63 +1,107 @@
+const mongoose = require("mongoose");
 const Product = require("../models/Product");
 const Category = require("../models/Category");
 
+
 // @desc    Get seller's products
 // @route   GET /api/products/seller
-// controllers/productController.js
+// Update getSellerProducts function
 const getSellerProducts = async (req, res) => {
   try {
-    // Use consistent user ID field
-    const sellerId = req.user.userId || req.user.id;
-    
-    const products = await Product.find({ seller: sellerId })
-      .populate("categories", "name")
-      .populate("seller", "username");
-      
-    res.json(products);
+    console.log("[getSellerProducts] Start");
+    console.log(`[getSellerProducts] User: ${JSON.stringify(req.user)}`);
+
+    if (!req.user || req.user.userType !== "seller") {
+      return res
+        .status(403)
+        .json({ message: "Forbidden: Seller access required" });
+    }
+
+    const sellerId = req.user.id;
+    console.log(`[getSellerProducts] Seller ID: ${sellerId}`);
+
+    if (!mongoose.Types.ObjectId.isValid(sellerId)) {
+      console.log("[getSellerProducts] Invalid seller ID format");
+      return res.status(400).json({ message: "Invalid user ID format" });
+    }
+
+    const objectId = new mongoose.Types.ObjectId(sellerId);
+    console.log(`[getSellerProducts] Converted to ObjectId: ${objectId}`);
+
+    // Find products without populate first
+    const products = await Product.find({ seller: objectId })
+      .select("name description price images stock categories")
+      .lean();
+
+    console.log(`[getSellerProducts] Found ${products.length} products`);
+
+    // Manually populate categories
+    const populatedProducts = await Promise.all(
+      products.map(async (product) => {
+        const categories = await Category.find({
+          _id: { $in: product.categories },
+        }).select("name");
+        return {
+          ...product,
+          categories: categories.map((cat) => cat.name),
+        };
+      })
+    );
+
+    console.log("[getSellerProducts] Success");
+    res.json(populatedProducts);
   } catch (error) {
-    console.error('Get seller products error:', error);
-    res.status(500).json({ 
+    console.error("[getSellerProducts] ERROR:", error);
+    console.error(error.stack);
+    res.status(500).json({
       message: "Server error",
-      error: error.message
+      error: error.message,
     });
   }
 };
 
-// Backend controller for GET /api/products
+// Other controller functions remain the same...
+
+// @desc    Get all products
+// @route   GET /api/products
 const getProducts = async (req, res) => {
   try {
     const products = await Product.find({})
-      .populate('categories', 'name')
-      .populate('seller', 'username');
+      .populate("categories", "name")
+      .populate("seller", "username");
     res.json(products);
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: "Server error" });
   }
 };
 
-// Backend controller for GET /api/categories
+// @desc    Get all categories
+// @route   GET /api/categories
 const getCategories = async (req, res) => {
   try {
-    const categories = await Category.find({}, 'name');
+    const categories = await Category.find({}, "name");
     res.json(categories);
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: "Server error" });
   }
 };
+
 // @desc    Create a product
 // @route   POST /api/products
 const createProduct = async (req, res) => {
   try {
     const { name, description, price, categories, images, stock } = req.body;
 
-    // Validate categories
+    if (!name || !description || !price || !categories || !stock) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
     if (!Array.isArray(categories) || categories.length === 0) {
       return res
         .status(400)
         .json({ message: "At least one category is required" });
     }
 
-    // Check if all categories exist
     const categoriesExist = await Category.find({ _id: { $in: categories } });
     if (categoriesExist.length !== categories.length) {
       return res
@@ -65,8 +109,9 @@ const createProduct = async (req, res) => {
         .json({ message: "One or more categories are invalid" });
     }
 
-    // Use consistent user ID
-    const sellerId = req.user.userId || req.user.id;
+    const sellerId = new mongoose.Types.ObjectId(
+      req.user.userId || req.user.id
+    );
 
     const product = new Product({
       name,
@@ -96,29 +141,23 @@ const updateProduct = async (req, res) => {
     const { name, description, price, categories, images, stock } = req.body;
 
     const product = await Product.findById(req.params.id);
-
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // Use consistent user ID
     const userId = req.user.userId || req.user.id;
-
     if (product.seller.toString() !== userId) {
       return res
         .status(401)
         .json({ message: "Not authorized to update this product" });
     }
 
-    // Validate categories if provided
     if (categories) {
       if (!Array.isArray(categories) || categories.length === 0) {
         return res
           .status(400)
           .json({ message: "At least one category is required" });
       }
-
-      // Check if all categories exist
       const categoriesExist = await Category.find({ _id: { $in: categories } });
       if (categoriesExist.length !== categories.length) {
         return res
@@ -127,7 +166,6 @@ const updateProduct = async (req, res) => {
       }
     }
 
-    // Update fields
     product.name = name || product.name;
     product.description = description || product.description;
     product.price = price ? parseFloat(price) : product.price;
@@ -136,7 +174,9 @@ const updateProduct = async (req, res) => {
       : product.categories;
     product.images = Array.isArray(images)
       ? images
-      : [images] || product.images;
+      : images
+      ? [images]
+      : product.images;
     product.stock = stock ? parseInt(stock) : product.stock;
 
     const updatedProduct = await product.save();
@@ -155,14 +195,11 @@ const updateProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
-
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // Use consistent user ID
     const userId = req.user.userId || req.user.id;
-
     if (product.seller.toString() !== userId) {
       return res
         .status(401)
@@ -176,14 +213,13 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-// Get single product
-// Update getProductById to better handle seller information
-// Get single product
+// @desc    Get single product by ID
+// @route   GET /api/products/:id
 const getProductById = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id)
       .populate("categories", "name")
-      .populate("seller", "_id username"); // Ensure _id is included
+      .populate("seller", "_id username");
 
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
@@ -193,8 +229,8 @@ const getProductById = async (req, res) => {
       ...product._doc,
       seller: {
         _id: product.seller._id.toString(),
-        username: product.seller.username
-      }
+        username: product.seller.username,
+      },
     });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
@@ -203,10 +239,10 @@ const getProductById = async (req, res) => {
 
 module.exports = {
   getSellerProducts,
+  getProducts,
+  getCategories,
   createProduct,
   updateProduct,
   deleteProduct,
   getProductById,
-  getProducts,
-  getCategories
 };
