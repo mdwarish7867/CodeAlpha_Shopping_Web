@@ -102,7 +102,7 @@ CODEALPHA_SHOPPING_WEB/
 ### 1️⃣ Clone Repository
 
 ```bash
-git clone https://github.com/yourusername/CODEALPHA_SHOPPING_WEB.git
+git clone https://github.com/mdwarish7867/CODEALPHA_SHOPPING_WEB.git
 cd CODEALPHA_SHOPPING_WEB
 ```
 
@@ -118,10 +118,10 @@ npm install
 Create `.env` in `NexusShop-backend/`:
 
 ```env
-MONGO_URI=mongodb+srv://warishansari018:bL2PSz34GKCx500z@trackruit.3ri2lhd.mongodb.net/NexusShop?retryWrites=true&w=majority
-JWT_SECRET=bL2PSz34GKCx500z
+MONGO_URI=Your DB URL (MongoDB Atlas)
+JWT_SECRET=Your JWT Secret Key
 PORT=5000
-NODE_ENV=production
+NODE_ENV=production or development
 FRONTEND_URL=http://localhost:3000
 ```
 

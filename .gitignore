@@ -1,16 +1,28 @@
-# Global ignores
+# =========================
+# Global Ignores
+# =========================
+
+# Node.js dependencies
 node_modules/
-.env
+
+# All backend .env files (any subfolder except frontend)
+# Prevents accidental upload of backend secrets
+**/.env
+**/.env.*
+!nexusshop-frontend/.env
+!nexusshop-frontend/.env.*
+
+# System files
 .DS_Store
-.env.local
-.env.production.local
-.env.development.local
 
 # Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Build outputs (optional for Frontend)
+# =========================
+# Build Outputs
+# =========================
+# Frontend / Backend builds
 build/
 dist/
