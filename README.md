@@ -1,7 +1,9 @@
-# NexusShop - Full Stack E-commerce Platform (MERN Stack)
+
+
+# 🛍️ NexusShop - Full Stack E-commerce Platform (MERN Stack)
 
 **🌐 Live Demo:**
-https://codealpha-shopping-web-frontend.onrender.com/
+[https://codealpha-shopping-web-frontend.onrender.com/](https://codealpha-shopping-web-frontend.onrender.com/)
 
 ---
 
@@ -11,141 +13,208 @@ https://codealpha-shopping-web-frontend.onrender.com/
 CODEALPHA_SHOPPING_WEB/
 ├── NexusShop-backend/      # Express.js Backend
 ├── nexusshop-frontend/     # React.js Frontend
-└── README.md                # This File
+└── README.md               # Project Documentation
 ```
 
 ---
 
 ## ✨ Tech Stack
 
-- **Frontend:** React.js, Tailwind CSS, React Router DOM, Context API
-- **Backend:** Node.js, Express.js, MongoDB Atlas, Mongoose
-- **Authentication:** JWT (JSON Web Token)
-- **Cloud Storage:** Cloudinary (for product images)
-- **Deployment:** Render (Frontend & Backend)
-- **Others:** Axios, dotenv, bcryptjs, cookie-parser
+**Frontend:**
+
+* React.js
+* Tailwind CSS
+* React Router DOM
+* Context API
+
+**Backend:**
+
+* Node.js
+* Express.js
+* MongoDB Atlas
+* Mongoose
+
+**Other Tools:**
+
+* JWT Authentication
+* Cloudinary (Image Storage)
+* Axios
+* dotenv
+* bcryptjs
+* cookie-parser
+
+**Deployment:**
+
+* Render (Frontend & Backend)
 
 ---
 
 ## 🛠️ Features
 
-### 👤 User Features:
+### 👤 User
 
-- User Registration & Login (JWT Auth)
-- Browse Products by Categories
-- Product Details View
-- Add to Cart & Wishlist (with persistence)
-- User Dashboard (Orders, Wishlist)
-- Responsive UI (Mobile-friendly)
+* Registration & Login (JWT Auth)
+* Browse Products by Category
+* Product Details Page
+* Add to Cart & Wishlist (with persistence)
+* User Dashboard (Orders, Wishlist)
+* Mobile-Friendly Responsive UI
 
-### 🛒 Seller Features:
+### 🛒 Seller
 
-- Seller Dashboard
-- Add / Edit / Delete Products
-- View Seller’s Products
+* Seller Dashboard
+* Add / Edit / Delete Products
+* View Seller's Products
 
-### 🛡️ Admin Features (via MongoDB/Render Dashboard):
+### 🛡️ Admin
 
-- Manage Users, Sellers, Products via MongoDB Atlas and Render Admin Panel
+* Manage Users, Sellers, and Products (via MongoDB Atlas or Render Admin Panel)
 
 ---
 
-## 📁 Folder Breakdown
+## 📂 Folder Breakdown
 
-### Backend (NexusShop-backend/)
+### **Backend (`NexusShop-backend/`)**
 
-- config/ → Cloudinary & MongoDB Setup
-- controllers/ → Auth, Product, Cart logic
-- middleware/ → JWT Auth Middleware & Error Handling
-- models/ → Mongoose Models (User, Product, Cart)
-- routes/ → Express API Routes
-- utils/ → Helper Utilities (Token Generation, Seed Categories)
-- server.js → Express Server Entry Point
+* **config/** → Cloudinary & MongoDB setup files
+* **controllers/** → Auth, Product, Cart logic
+* **middleware/** → JWT authentication & error handling
+* **models/** → Mongoose Models (User, Product, Cart, Category)
+* **routes/** → Express API route definitions
+* **utils/** → Helper utilities (Token generation, category seeding)
+* **server.js** → Express server entry point
 
-### Frontend (nexusshop-frontend/)
+### **Frontend (`nexusshop-frontend/`)**
 
-- context/ → AuthContext, CartContext, WishlistContext
-- components/layout/ → Navbar, Footer
-- pages/auth/ → Login, Register Pages
-- pages/dashboard/ → User Dashboard & Seller Dashboard
-- pages/products/ → Product List & Product Details
-- pages/cart/ → Cart Page
-- pages/wishlist/ → Wishlist Page
-- pages/static/ → About, Contact, FAQ
-- App.jsx → Frontend Route Setup
-- index.js → React App Entry Point
+* **context/** → AuthContext, CartContext
+* **components/layout/** → Navbar, Footer
+* **pages/auth/** → Login, Register
+* **pages/dashboard/** → User Dashboard, Seller Dashboard
+* **pages/products/** → Product List, Product Details, Add/Edit Product
+* **pages/cart/** → Cart Page
+* **pages/wishlist/** → Wishlist Page
+* **pages/static/** → About, Contact, FAQ
+* **App.jsx** → Route setup
+* **index.js** → React app entry point
 
 ---
 
 ## 🚀 Getting Started Locally
 
-### 1. Clone the Repository
+### 1️⃣ Clone Repository
 
-git clone [https://github.com/yourusername/CODEALPHA_SHOPPING_WEB.git](https://github.com/yourusername/CODEALPHA_SHOPPING_WEB.git)
+```bash
+git clone https://github.com/yourusername/CODEALPHA_SHOPPING_WEB.git
 cd CODEALPHA_SHOPPING_WEB
+```
 
-### 2. Backend Setup
+---
 
+### 2️⃣ Backend Setup
+
+```bash
 cd NexusShop-backend
 npm install
+```
 
-Create a .env file in NexusShop-backend/:
+Create `.env` in `NexusShop-backend/`:
+
+```env
+MONGO_URI=mongodb+srv://warishansari018:bL2PSz34GKCx500z@trackruit.3ri2lhd.mongodb.net/NexusShop?retryWrites=true&w=majority
+JWT_SECRET=bL2PSz34GKCx500z
 PORT=5000
-MONGO_URI=your_mongodb_atlas_connection_string
-JWT_SECRET=your_jwt_secret
-CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
-CLOUDINARY_API_KEY=your_cloudinary_api_key
-CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+NODE_ENV=production
+FRONTEND_URL=http://localhost:3000
+```
 
-Run Backend Locally:
+> ⚠️ **Security Note:** Never commit your `.env` file to GitHub. Use `.gitignore` to keep it private.
+
+Run backend:
+
+```bash
 npm run dev
+```
 
-### 3. Frontend Setup
+---
 
+### 3️⃣ Frontend Setup
+
+```bash
 cd ../nexusshop-frontend
 npm install
-npm run dev
+```
+
+Create `.env` in `nexusshop-frontend/`:
+
+```env
+REACT_APP_BACKEND_URL=http://localhost:5000
+```
+
+Run frontend:
+
+```bash
+npm start
+```
 
 ---
 
-## 🌐 Deployment on Render
+## 🌐 Deployment (Render)
 
-### Backend (Express.js):
+### Backend (Express.js)
 
-1. Go to Render → New Web Service → Connect your GitHub → Select NexusShop-backend.
-2. Build Command: npm install
-3. Start Command: node server.js
-4. Add Environment Variables from .env in Render dashboard.
+1. Go to **Render** → **New Web Service** → Connect GitHub → Select `NexusShop-backend`.
+2. **Build Command:**
 
-### Frontend (React.js):
+   ```
+   npm install
+   ```
+3. **Start Command:**
 
-1. Go to Render → New Static Site → Connect your GitHub → Select nexusshop-frontend.
-2. Build Command: npm run build
-3. Publish Directory: dist (if using Vite) or build (if using Create React App)
-4. Add Environment Variable:
-
-   - Key: VITE_BACKEND_URL → Value: <Your Backend Render URL>
+   ```
+   node server.js
+   ```
+4. Add environment variables from your `.env` file to Render’s **Environment Variables** section.
 
 ---
 
-## 📄 Future Improvements
+### Frontend (React.js)
 
-- Integrate Payment Gateway (Stripe/Razorpay)
-- Full Order Placement & History
-- Admin Panel UI
-- Product Ratings & Reviews
-- Search & Advanced Filtering
+1. Go to **Render** → **New Static Site** → Connect GitHub → Select `nexusshop-frontend`.
+2. **Build Command:**
+
+   ```
+   npm run build
+   ```
+3. **Publish Directory:**
+
+   * `dist` (if using Vite)
+   * `build` (if using Create React App)
+4. Add environment variable:
+
+   ```env
+   REACT_APP_BACKEND_URL=<Your Backend Render URL>
+   ```
+
+---
+
+## 🔮 Future Improvements
+
+* Payment Gateway Integration (Stripe/Razorpay)
+* Order Placement & History
+* Admin Panel UI
+* Product Ratings & Reviews
+* Search & Advanced Filtering
 
 ---
 
 ## 📝 License
 
-This project is part of the CodeAlpha Internship Program and is open-source for educational purposes.
+This project is developed as part of the **CodeAlpha Internship Program** and is open-source for educational purposes.
 
 ---
 
 ## 🤝 Acknowledgements
 
-- CodeAlpha for Internship Guidance
-- Render for Free Hosting Services
-- MongoDB Atlas & Cloudinary for Developer Tools
+* **CodeAlpha** — Internship Guidance
+* **Render** — Free Hosting Services
+* **MongoDB Atlas & Cloudinary** — Developer Tools

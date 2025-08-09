@@ -28,7 +28,6 @@ CODEALPHA_SHOPPING_WEB/
 │   │   ├── categoryRoutes.js
 │   │   ├── productRoutes.js
 │   │   ├── userRoutes.js
-│   │   └── wishlistRoutes.js
 │   │
 │   ├── utils/                    # Helper utilities
 │   │   ├── generateToken.js
@@ -60,7 +59,6 @@ CODEALPHA_SHOPPING_WEB/
 │   │   ├── context/                # React Context API files
 │   │   │   ├── AuthContext.jsx
 │   │   │   ├── CartContext.jsx
-│   │   │   └── WishlistContext.jsx
 │   │   │
 │   │   ├── pages/                  # Page components (by feature)
 │   │   │   ├── auth/
@@ -82,7 +80,6 @@ CODEALPHA_SHOPPING_WEB/
 │   │   │   │   ├── Contact.jsx
 │   │   │   │   └── FAQ.jsx
 │   │   │   └── wishlist/
-│   │   │       ├── WishlistPage.jsx
 │   │   │       └── NotFound.jsx
 │   │   │
 │   │   ├── App.jsx                 # Root app component
@@ -96,4 +93,3 @@ CODEALPHA_SHOPPING_WEB/
 │   └── tailwind.config.js
 │
 ├── README.md                       # Main project readme
-└── st.txt                           # (Your local file)
